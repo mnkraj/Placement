@@ -23,7 +23,7 @@ passport.use(new GoogleStrategy({
     User.findOne({ googleId: profile.id }).then(existingUser  => {
         const email = profile.emails[0].value;
         if (!email.endsWith("@nitjsr.ac.in")) {
-            return done(null, false, { message: "Only NIT Jamshedpur emails are allowed." });
+            return done(null, false, { message: "For Security Reasons , Only Emails associated with the institute are allowed to login." });
         }
         if (existingUser ) {
             done(null, existingUser );
