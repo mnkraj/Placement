@@ -29,7 +29,7 @@ router.get("/google/callback", (req, res, next) => {
             if (loginErr) {
                 return res.status(500).json({ success: false, message: "Login failed." });
             }
-            return res.redirect(`/profile`);
+            return res.redirect(`/auth/profile`);
         });
     })(req, res, next);
 });
