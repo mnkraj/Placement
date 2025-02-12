@@ -6,7 +6,7 @@ const page = () => {
   return (
     <div>
       <div className='mt-20 flex justify-center align-centre'>
-      <Tiptap/>
+      {/* <Tiptap/> */}
       </div>
     </div>
   )

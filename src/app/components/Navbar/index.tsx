@@ -54,11 +54,11 @@ const Navbar = () => {
               >
                 <GithubIcon />
               </a>
-              <a href="https://placement-swart.vercel.app/auth/google">
+              <Link href="https://placement-swart.vercel.app/auth/google">
                 <button className="rounded-[8px] border border-[#445163] bg-[#161D29] px-[12px] py-[8px] text-[#AFBEBF]">
                   Login
                 </button>
-              </a>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
