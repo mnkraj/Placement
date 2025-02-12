@@ -22,7 +22,7 @@ router.get("/google/callback", (req, res, next) => {
             if (loginErr) {
                 return res.status(500).json({ success: false, message: "Login failed." });
             }
-            return res.redirect(`/auth/profile`);
+            return res.json({success : true , message : "Log In Successfull"});
         });
     })(req, res, next);
 });
@@ -38,7 +38,7 @@ router.get('/logout',loggedin , (req, res) => {
         if (err) {
             return next(err);
         }
-        res.redirect('/'); // Redirect to home or login page
+        res.json({success : true , message : "User Logged Out Successfully"}); // Redirect to home or login page
     });
 });
 
