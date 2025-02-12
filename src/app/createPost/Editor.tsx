@@ -13,7 +13,7 @@ const TiptapEditor = () => {
 
   const editor = useEditor({
     extensions: [StarterKit, Bold, Italic, Underline],
-    content: "",
+    content: content,
     onUpdate: ({ editor }) => {
       setContent(editor.getHTML());
     },

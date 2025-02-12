@@ -14,9 +14,9 @@ const Navbar = () => {
       <div className="fixed inset-x-0 top-0 z-10 border-b border-gray-950/5 dark:border-white/10">
         <div className="bg-[#161D29]">
           <div className="flex h-14 items-center justify-between gap-4 md:h-[75px] px-4 sm:px-6">
-            <a className="shrink-0 text-2xl font-semibold" aria-label="Home" href="/">
+            <Link className="shrink-0 text-2xl font-semibold" aria-label="Home" href="/">
               Placement
-            </a>
+            </Link>
 
             {/* Search Bar */}
             <div className="flex-1 flex justify-center max-md:hidden">
@@ -48,12 +48,12 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              <a
+              <Link
                 className="text-gray-950 dark:text-white"
                 href="https://github.com/mnkraj/Placement"
               >
                 <GithubIcon />
-              </a>
+              </Link>
               <Link href="https://placement-swart.vercel.app/auth/google">
                 <button className="rounded-[8px] border border-[#445163] bg-[#161D29] px-[12px] py-[8px] text-[#AFBEBF]">
                   Login
@@ -121,12 +121,12 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              <a className="text-sm text-gray-950 dark:text-white" href="https://github.com/mnkraj/Placement">
+              <Link className="text-sm text-gray-950 dark:text-white" href="https://github.com/mnkraj/Placement">
                 Github
-              </a>
-              <a className="text-sm text-gray-950 dark:text-white" href="/showcase">
+              </Link>
+              <Link className="text-sm text-gray-950 dark:text-white" href="/showcase">
                 Login
-              </a>
+              </Link>
             </div>
           </div>
         )}
