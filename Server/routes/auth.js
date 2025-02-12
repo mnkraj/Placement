@@ -1,20 +1,13 @@
 // routes/auth.js
 const express = require('express');
 const passport = require('passport');
-
+const loggedin = require("../Middleware/Authmiddleware")
 const router = express.Router();
 
 // Auth with Google
 router.get('/google', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
-router.get('/profile', (req, res) => {
-    if (!req.isAuthenticated()) {
-        return res.redirect("/");
-    }
-    res.send('You are logged in');
-}
-);
 
 // Callback route for Google to redirect to
 router.get("/google/callback", (req, res, next) => {
@@ -34,8 +27,13 @@ router.get("/google/callback", (req, res, next) => {
     })(req, res, next);
 });
 
+router.get('/profile',loggedin , (req, res) => {
+    res.send({success : true , data : req.user})
+}
+);
 
-router.get('/logout', (req, res) => {
+
+router.get('/logout',loggedin , (req, res) => {
     req.logout((err) => {
         if (err) {
             return next(err);
