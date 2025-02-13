@@ -1,14 +1,44 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { usePathname } from "next/navigation";
 import GithubIcon from "../Icons/GithubIcon";
 import Link from "next/link";
+import ProfileDropdown from "./Profiledown";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const pathname = usePathname(); // Get current route
-
+  const [user,setUser] = useState({
+    "_id": "",
+    "googleId": "",
+    "email": "",
+    "displayName": "",
+    "firstName": "",
+    "lastName": "",
+    "image": "",
+    "createdAt": "",
+    "updatedAt": "",
+    "__v": 0
+  })
+    useEffect(() => {
+      async function fetchUser() {
+        try {
+          const response = await fetch("https://placement-swart.vercel.app/auth/profile", {
+            credentials: "include", 
+          });
+          const data = await response.json();
+          if (data.success) {
+            setUser(data.data); // Save user details
+          } 
+        } catch (error) {
+          console.error("Error fetching user:", error);
+          
+        }
+      }
+      fetchUser();
+      console.log(user)
+    }, []);
   return (
     <div>
       <div className="fixed inset-x-0 top-0 z-10 border-b border-gray-950/5 dark:border-white/10">
@@ -54,11 +84,12 @@ const Navbar = () => {
               >
                 <GithubIcon />
               </Link>
-              <Link href="https://placement-swart.vercel.app/auth/google">
+              {!user.email && <Link href="https://placement-swart.vercel.app/auth/google">
                 <button className="rounded-[8px] border border-[#445163] bg-[#161D29] px-[12px] py-[8px] text-[#AFBEBF]">
                   Login
                 </button>
-              </Link>
+              </Link> }
+              {user.email && <ProfileDropdown/>}
             </div>
 
             {/* Mobile Menu Button */}
@@ -124,9 +155,10 @@ const Navbar = () => {
               <Link className="text-sm text-gray-950 dark:text-white" href="https://github.com/mnkraj/Placement">
                 Github
               </Link>
-              <Link className="text-sm text-gray-950 dark:text-white" href="/showcase">
+              {user.email && <Link className="text-sm text-gray-950 dark:text-white" href="/showcase">
                 Login
-              </Link>
+              </Link>}
+              {user.email && <ProfileDropdown/>}
             </div>
           </div>
         )}

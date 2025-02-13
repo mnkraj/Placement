@@ -22,7 +22,7 @@ router.get("/google/callback", (req, res, next) => {
             if (loginErr) {
                 return res.status(500).json({ success: false, message: "Login failed." });
             }
-            return res.json({success : true , message : "Log In Successfull"});
+            res.redirect("https://placement-6v62.vercel.app")
         });
     })(req, res, next);
 });
