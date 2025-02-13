@@ -11,7 +11,8 @@ const app = express();
 
 app.use(cors({
   origin: "https://placement-6v62.vercel.app",
-  methods: ["GET", "POST"]
+  methods: ["GET", "POST"],
+  credentials: true,
 }));
 
 connectDB();
