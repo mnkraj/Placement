@@ -3,7 +3,6 @@ const connectDB = require("./config/Db");
 const passport = require("passport");
 require("./config/passport")
 const MongoStore = require("connect-mongo");
-const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const authroutes = require("./routes/auth");
 const cookieParser = require("cookie-parser");
@@ -36,9 +35,7 @@ app.use(session({
 }),
   cookie: {
     maxAge: 60 * 60 * 1000, 
-    secure: true,
-    httpOnly: true, 
-    sameSite: "none"
+    
   },
 }));
 
