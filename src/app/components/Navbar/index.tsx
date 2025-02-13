@@ -24,11 +24,11 @@ const Navbar = () => {
     useEffect(() => {
       async function fetchUser() {
         try {
-          const response = await fetch("https://placement-swart.vercel.app/auth/profile", {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/profile`, {
             credentials: "include", 
           });
           const data = await response.json();
-          console.log(data)
+          // console.log(data)
           if (data.success) {
             setUser(data.data); // Save user details
           } 
@@ -38,7 +38,7 @@ const Navbar = () => {
         }
       }
       fetchUser();
-      console.log(user)
+      // console.log(user)
     }, []);
   return (
     <div>
@@ -85,7 +85,7 @@ const Navbar = () => {
               >
                 <GithubIcon />
               </Link>
-              {!user.email && <Link href="https://placement-swart.vercel.app/auth/google">
+              {!user.email && <Link href= {`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`}>
                 <button className="rounded-[8px] border border-[#445163] bg-[#161D29] px-[12px] py-[8px] text-[#AFBEBF]">
                   Login
                 </button>
@@ -156,7 +156,7 @@ const Navbar = () => {
               <Link className="text-sm text-gray-950 dark:text-white" href="https://github.com/mnkraj/Placement">
                 Github
               </Link>
-              {user.email && <Link className="text-sm text-gray-950 dark:text-white" href="/showcase">
+              {!user.email && <Link className="text-sm text-gray-950 dark:text-white" href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`}>
                 Login
               </Link>}
               {user.email && <ProfileDropdown/>}

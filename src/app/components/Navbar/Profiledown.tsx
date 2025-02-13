@@ -19,15 +19,39 @@ export default function ProfileDropdown() {
     "updatedAt": "",
     "__v": 0
   })
+  const handlelogout = async()=>{
+    try{
+      let res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`, {
+        credentials: "include", 
+      });
+      const data = await res.json();
+      if(data.success) setUser({
+        "_id": "",
+        "googleId": "",
+        "email": "",
+        "displayName": "",
+        "firstName": "",
+        "lastName": "",
+        "image": "",
+        "createdAt": "",
+        "updatedAt": "",
+        "__v": 0
+      });
+    }catch{
+
+    }
+  }
   useEffect(() => {
     async function fetchUser() {
       try {
-        const response = await fetch("https://placement-swart.vercel.app/auth/profile", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/profile`, {
           credentials: "include", 
         });
         const data = await response.json();
+        console.log(data)
         if (data.success) {
           setUser(data.data); // Save user details
+          console.log(user)
         } 
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -35,7 +59,6 @@ export default function ProfileDropdown() {
       }
     }
     fetchUser();
-    console.log(user)
   }, []);
 
   return (
@@ -70,10 +93,10 @@ export default function ProfileDropdown() {
               </Link>
               <div
                 className="flex items-center gap-x-2 px-4 py-2 text-sm text-white hover:bg-gray-700 cursor-pointer"
-                onClick={() => setOpen(false)}
+                onClick={() => {setOpen(false)}} 
               >
                 <VscSignOut className="text-lg" />
-                Logout
+                <div onClick={handlelogout}>Logout</div>
               </div>
             </div>
           )}
@@ -92,7 +115,7 @@ export default function ProfileDropdown() {
             className="flex items-center gap-x-2 px-4 py-2 text-sm hover:bg-gray-700 cursor-pointer"
           >
             <VscSignOut className="text-lg" />
-            Logout
+            <div onClick={handlelogout}>Logout</div>
           </div>
         </div>
       )}

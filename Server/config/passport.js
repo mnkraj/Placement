@@ -3,7 +3,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const mongoose = require('mongoose');
 const User = require("../models/User")
-require('dotenv').config();
+require('dotenv').config({path : "../.env"});
 
 passport.serializeUser ((user, done) => {
     done(null, user.id);
@@ -18,7 +18,7 @@ passport.deserializeUser ((id, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://placement-swart.vercel.app/auth/google/callback",
+    callbackURL: `${process.env.DEPLOYED_URL}/auth/google/callback`,
 }, (accessToken, refreshToken, profile, done) => {
     User.findOne({ googleId: profile.id }).then(existingUser  => {
         const email = profile.emails[0].value;
@@ -41,3 +41,5 @@ passport.use(new GoogleStrategy({
         }
     });
 }));
+
+console.log(process.env.DEPLOYED_URL)

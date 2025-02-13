@@ -10,7 +10,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: "https://placement-6v62.vercel.app",
+  origin: `${process.env.FRONTEND_URL}`,
   methods: ["GET", "POST"],
   credentials: true,
 }));
