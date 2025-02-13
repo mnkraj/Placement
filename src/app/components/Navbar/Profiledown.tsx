@@ -21,7 +21,7 @@ export default function ProfileDropdown() {
   })
   const handlelogout = async()=>{
     try{
-      let res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`, {
         credentials: "include", 
       });
       const data = await res.json();
