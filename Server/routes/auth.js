@@ -10,23 +10,11 @@ router.get('/google', passport.authenticate('google', {
 }));
 
 // Callback route for Google to redirect to
-router.get("/google/callback", (req, res, next) => {
-    passport.authenticate("google", (err, user, info) => {
-        if (err) {
-            return res.status(500).json({ success: false, message: "Internal Server Error" });
-        }
-        if (!user) {
-            return res.status(401).json({ success: false, message: info?.message || "Only Emails Associated with the institute are allowed to login." });
-        }
-        req.logIn(user, (loginErr) => {
-            if (loginErr) {
-                return res.status(500).json({ success: false, message: "Login failed." });
-            }
-            res.redirect(`${process.env.FRONTEND_URL}`)
-        });
-    })(req, res, next);
+router.get('/google/callback', passport.authenticate('google',{
+    session: true // Ensure session is enabled
+}), (req, res) => {
+    res.redirect(`${process.env.FRONTEND_URL}`) // Redirect to your desired route after login
 });
-
 router.get('/profile',loggedin , (req, res) => {
     res.send({success : true , data : req.user})
 }
