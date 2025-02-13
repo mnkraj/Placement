@@ -33,12 +33,14 @@ router.get('/profile',loggedin , (req, res) => {
 );
 
 
-router.get('/logout',loggedin , (req, res) => {
+router.get('/logout', loggedin, (req, res, next) => {
     req.logout((err) => {
-        if (err) {
-            return next(err);
-        }
-        res.json({success : true , message : "User Logged Out Successfully"}); // Redirect to home or login page
+        if (err) return next(err);
+        req.session.destroy((err) => {  // Ensure session is destroyed
+            if (err) return next(err);
+            res.clearCookie('connect.sid'); // Clear session cookie
+            return res.json({ success: true, message: "User Logged Out Successfully" });
+        });
     });
 });
 
