@@ -1,0 +1,8 @@
+input{
+    background: #2C333F;
+    line-height: 24px;
+    padding: 0.75rem;
+    font-size: 16px;
+    border: 1 solid rgb(44,61,53);
+    border-radius: 0.375rem;
+}
