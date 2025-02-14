@@ -9,7 +9,7 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning lang="en">
-      <body className="antialiased bg-gray-950">
+      <body className="antialiased bg-[rgb(0,8,20)]">
         <Navbar />
         {/* <div className="grid min-h-dvh grid-cols-1 md:grid-cols-[1fr_minmax(0,1200px)_1fr] justify-center pt-14 [--gutter-width:2.5rem]"> */}
           {/* Left patterned sidebar */}

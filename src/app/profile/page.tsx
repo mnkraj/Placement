@@ -53,7 +53,7 @@ const Page = () => {
   return (
     <div>
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-white/10 bg-opacity-75 z-50">
           <Spinner />
         </div>
       )}
@@ -61,7 +61,7 @@ const Page = () => {
         <h1 className="mb-14 text-3xl font-medium text-richblack-5">
           My Profile
         </h1>
-        <div className="flex items-center justify-between rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] p-8 px-12">
+        <div className="flex items-center justify-between rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] md:p-8 p-[15px] ">
           <div className="flex items-center gap-x-4">
             <Image
             width={30}
@@ -94,7 +94,7 @@ const Page = () => {
             </svg>
           </button>
         </div>
-        <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] p-8 px-12">
+        <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] md:p-8 p-[15px] ">
           <div className="flex w-full items-center justify-between">
             <p className="text-lg font-semibold text-richblack-5">About</p>
             <button onClick={handlenavigateEditprofile}  className="flex items-center bg-[#FFD60A] cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined">
@@ -116,7 +116,7 @@ const Page = () => {
             Write Something About Yourself
           </p>
         </div>
-        <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] p-8 px-12">
+        <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] md:p-8 p-[15px] ">
           <div className="flex w-full items-center justify-between">
             <p className="text-lg font-semibold text-richblack-5">
               Personal Details
