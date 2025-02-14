@@ -1,29 +1,82 @@
-import React from "react";
+"use client";
+import React,{useState , useEffect} from "react";
+import Spinner from "../components/Spinner"
+import { useRouter } from "next/navigation"; // Import useRouter
+
+
 
 const page = () => {
+  const router = useRouter();
+  const [loading,setloading] = useState(false)
+    const [user, setUser] = useState({
+      "_id": "",
+      "googleId": "",
+      "email": "",
+      "displayName": "",
+      "firstName": "",
+      "lastName": "",
+      "image": "",
+      "createdAt": "",
+      "updatedAt": "",
+      "__v": 0
+    })
+    useEffect(() => {
+      async function fetchUser() {
+        setloading(true)
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/profile`, {
+            credentials: "include",
+          });
+          const data = await response.json();
+          // console.log(data)
+          if (!data.success) {
+            setloading(false)
+            router.push("/")
+            return ;
+            // Save user details
+          }
+          setUser(data.data); 
+          setloading(false)
+        } catch (error) {
+          console.error("Error fetching user:", error);
+  
+        }
+      }
+      fetchUser();
+      
+      // console.log(user)
+    }, []);
+  const handlenavigateEditprofile = ()=>{
+    router.push("/profile/editprofile")
+  }
   return (
     <div>
-      <div className="mx-auto w-11/12 max-w-[1000px] py-10 mt-[30px] md:mt-[90px]">
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+          <Spinner />
+        </div>
+      )}
+      {!loading && <div className="mx-auto w-11/12 max-w-[1000px] py-10 mt-[30px] md:mt-[90px]">
         <h1 className="mb-14 text-3xl font-medium text-richblack-5">
           My Profile
         </h1>
         <div className="flex items-center justify-between rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] p-8 px-12">
           <div className="flex items-center gap-x-4">
             <img
-              src="https://api.dicebear.com/5.x/initials/svg?seed=Mayank Raj"
+              src={user.image}
               alt="profile-Mayank"
               className="aspect-square w-[78px] rounded-full object-cover"
             />
             <div className="space-y-1">
               <p className="text-lg font-semibold text-richblack-5">
-                Mayank Raj
+                {user.displayName}
               </p>
               <p className="text-sm text-[#838894]">
-                2022ugcs042@nitjsr.ac.in
+                {user.email}
               </p>
             </div>
           </div>
-          <button className="flex items-center bg-[#FFD60A] cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined">
+          <button onClick={handlenavigateEditprofile} className="flex items-center bg-[#FFD60A] cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined">
             <span className="false">Edit</span>
             <svg
               stroke="currentColor"
@@ -41,7 +94,7 @@ const page = () => {
         <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] p-8 px-12">
           <div className="flex w-full items-center justify-between">
             <p className="text-lg font-semibold text-richblack-5">About</p>
-            <button className="flex items-center bg-[#FFD60A] cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined">
+            <button onClick={handlenavigateEditprofile}  className="flex items-center bg-[#FFD60A] cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined">
               <span className="false">Edit</span>
               <svg
                 stroke="currentColor"
@@ -65,7 +118,7 @@ const page = () => {
             <p className="text-lg font-semibold text-richblack-5">
               Personal Details
             </p>
-            <button className="flex items-center bg-[#FFD60A] cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined">
+            <button onClick={handlenavigateEditprofile}  className="flex items-center  bg-[#FFD60A] cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined">
               <span className="false">Edit</span>
               <svg
                 stroke="currentColor"
@@ -84,42 +137,32 @@ const page = () => {
             <div className="flex flex-col gap-y-5">
               <div>
                 <p className="mb-2 text-sm text-[#424854]">First Name</p>
-                <p className="text-sm font-medium text-richblack-5">Mayank</p>
+                <p className="text-sm font-medium text-richblack-5">{user.firstName}</p>
               </div>
               <div>
                 <p className="mb-2 text-sm text-[#424854]">Email</p>
                 <p className="text-sm font-medium text-richblack-5">
-                  2022ugcs042@nitjsr.ac.in
+                  {user.email}
                 </p>
               </div>
-              <div>
-                <p className="mb-2 text-sm text-[#424854]">Gender</p>
-                <p className="text-sm font-medium text-richblack-5">
-                  Add Gender
-                </p>
-              </div>
+              
             </div>
             <div className="flex flex-col gap-y-5">
               <div>
                 <p className="mb-2 text-sm text-[#424854]">Last Name</p>
-                <p className="text-sm font-medium text-richblack-5">Raj</p>
+                <p className="text-sm font-medium text-richblack-5">{user.lastName}</p>
               </div>
               <div>
-                <p className="mb-2 text-sm text-[#424854]">Phone Number</p>
+                <p className="mb-2 text-sm text-[#424854]">Intitute Id</p>
                 <p className="text-sm font-medium text-richblack-5">
-                  Add Contact Number
+                  {user.email.substring(0,11).toUpperCase()}
                 </p>
               </div>
-              <div>
-                <p className="mb-2 text-sm text-[#424854]">Date Of Birth</p>
-                <p className="text-sm font-medium text-richblack-5">
-                  January 1, 1970
-                </p>
-              </div>
+              
             </div>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };
