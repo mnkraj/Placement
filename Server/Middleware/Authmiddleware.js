@@ -4,7 +4,7 @@ const loggedin = (req, res, next) => {
     const token = req.cookies.jwt || req.headers.authorization?.split(" ")[1];
 
     if (!token) {
-        return res.status(401).json({ success: false, message: "User Not Logged In" });
+        return res.json({ success: false, message: "User Not Logged In" });
     }
 
     try {
@@ -12,7 +12,7 @@ const loggedin = (req, res, next) => {
         req.user = decoded; // Attach full user data to request
         next();
     } catch (error) {
-        return res.status(401).json({ success: false, message: "Invalid Token" });
+        return res.json({ success: false, message: "Invalid Token" });
     }
 };
 
