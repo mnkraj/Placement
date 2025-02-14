@@ -2,10 +2,11 @@
 import React,{useState , useEffect} from "react";
 import Spinner from "../components/Spinner"
 import { useRouter } from "next/navigation"; // Import useRouter
+import Image from "next/image";
 
 
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const [loading,setloading] = useState(false)
     const [user, setUser] = useState({
@@ -45,7 +46,7 @@ const page = () => {
       fetchUser();
       
       // console.log(user)
-    }, []);
+    }, [router]);
   const handlenavigateEditprofile = ()=>{
     router.push("/profile/editprofile")
   }
@@ -62,8 +63,10 @@ const page = () => {
         </h1>
         <div className="flex items-center justify-between rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] p-8 px-12">
           <div className="flex items-center gap-x-4">
-            <img
-              src={user.image}
+            <Image
+            width={30}
+            height={30}
+              src={user.image || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
               alt="profile-Mayank"
               className="aspect-square w-[78px] rounded-full object-cover"
             />
@@ -167,4 +170,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

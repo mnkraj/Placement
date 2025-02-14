@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { VscDashboard, VscSignOut } from "react-icons/vsc";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Spinner from "../Spinner"
 import { useMediaQuery } from "react-responsive"; // For responsive behavior
@@ -80,6 +81,7 @@ export default function ProfileDropdown() {
         }
         setUser(data.data);
       } catch (error) {
+        setloading(false)
         console.error("Error fetching user:", error);
       }
       finally {
@@ -87,7 +89,7 @@ export default function ProfileDropdown() {
       }
     }
     fetchUser();
-  }, []);
+  }, [router]);
 
   return (
     <div>
@@ -104,9 +106,11 @@ export default function ProfileDropdown() {
               className="flex items-center gap-x-1 focus:outline-none"
               onClick={() => setOpen((prev) => !prev)}
             >
-              <img
-                src={user.image}
+              <Image
+                src={user.image || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
                 className="aspect-square w-[30px] rounded-full object-cover"
+                width={30}
+                height={30}
                 alt="Profile"
               />
               <AiOutlineCaretDown className="text-sm text-richblack-100" />

@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import Spinner from "../../components/Spinner"
 import React, { useState,useEffect } from "react";
+import Image from "next/image";
 import "./styles.css"
 
 const Page = () => {
@@ -51,7 +52,7 @@ const Page = () => {
     fetchUser();
     
     // console.log(user)
-  }, []);
+  }, [router]);
 
   return (
     <div>
@@ -67,9 +68,11 @@ const Page = () => {
         {/* Profile Image Section */}
         <div className="flex items-center justify-between rounded-md border border-gray-700 bg-gray-800 p-8 px-12 text-white">
           <div className="flex items-center gap-x-4">
-            <img
-              src={user.image}
+            <Image
+              src={user.image || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
               alt="profile-Mayank"
+              width={30}
+              height={30}
               className="aspect-square w-[78px] rounded-full object-cover"
             />
             <div className="space-y-2">
