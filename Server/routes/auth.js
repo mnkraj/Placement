@@ -26,11 +26,11 @@ router.get('/google/callback', passport.authenticate('google', { session: false 
 // Get user profile
 router.get('/profile', loggedin, (req, res) => {
     res.json({ success: true, data: req.user });
-    console.log(req.user)
+    // console.log(req.user)
 });
 
 // Logout user
-router.get('/logout', (req, res) => {
+router.get('/logout',loggedin, (req, res) => {
     res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "none" });
     res.json({ success: true, message: "User Logged Out Successfully" });
 });
