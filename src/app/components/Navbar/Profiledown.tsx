@@ -33,14 +33,14 @@ export default function ProfileDropdown() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`, {
         credentials: "include",
         method: "GET",
+        headers: {
+          "Cache-Control": "no-cache",
+          "Pragma": "no-cache",
+          "Expires": "0"
+        }
       });
       const data = await res.json();
-      // console.log("Logout Response:", data); // Debugging
-
-      if (!data.success) {
-        return ;
-
-      }
+      console.log("Logout Response:", data); // Debugging
       setUser({
         "_id": "",
         "googleId": "",
@@ -53,12 +53,11 @@ export default function ProfileDropdown() {
         "updatedAt": "",
         "__v": 0
       });
+      setloading(false)
       window.location.reload()
     } catch (error) {
       console.error("Error logging out:", error);
-    } finally {
-      setloading(false)
-    }
+    } 
   };
 
   useEffect(() => {
