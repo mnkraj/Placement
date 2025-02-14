@@ -34,11 +34,6 @@ export default function ProfileDropdown() {
         credentials: "include",
         method: "GET",
       });
-
-      if (!res.ok) {
-        throw new Error(`Logout failed: ${res.status} ${res.statusText}`);
-      }
-
       const data = await res.json();
       // console.log("Logout Response:", data); // Debugging
 
