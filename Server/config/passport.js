@@ -10,6 +10,7 @@ passport.use(new GoogleStrategy({
     callbackURL: `${process.env.DEPLOYED_URL}/auth/google/callback`,
 }, async (accessToken, refreshToken, profile, done) => {
     try {
+        // if(!profile.emails[0].value.endsWith("@nitjsr.ac.in")) return done(null , false , {message : "Only nitjsr Emails are allowed"})
         let user = await User.findOne({ googleId: profile.id });
 
         if (!user) {
