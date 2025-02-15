@@ -19,7 +19,44 @@ const Page = () => {
   // const [profileImage, setProfileImage] = useState(null);
   const router = useRouter();
   const [loading, setloading] = useState(false)
+  const [comapanyname,setcompanyname] = useState("")
+  const [selectedCompanyLogo, setSelectedCompanyLogo] = useState<File | null>(null);
+  const [companyLogoPreview, setCompanyLogoPreview] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const handleCompanyLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedCompanyLogo(file);
+      setCompanyLogoPreview(URL.createObjectURL(file));
+      
+    }
+  };
+  const handlereset=()=>{
+    setSelectedCompanyLogo(null)
+    setCompanyLogoPreview("")
+    setcompanyname("")
+  }
+  const handleCompanyUpload = async () => {
+    if (!selectedCompanyLogo) return alert("Please select a company logo");
+    setloading(true);
+    const formData = new FormData();
+    formData.append("Logo", selectedCompanyLogo);
+    formData.append("name", comapanyname);
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/add-company`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+      await response.json();
+    } catch (error) {
+      console.error("Company logo upload failed:", error);
+    } finally {
+      setloading(false);
+      handlereset()
+    }
+  };
   const [user, setUser] = useState({
     "_id": "",
     "googleId": "",
@@ -35,32 +72,32 @@ const Page = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; // Ensure file exists
 
-    if (file) {  
+    if (file) {
       setSelectedFile(file);
       setUser((prev) => ({ ...prev, image: URL.createObjectURL(file) })); // Use 'file' directly
     }
-};
+  };
 
   const handleUpload = async () => {
     if (!selectedFile) return alert("Please select a file");
-    setloading(true) 
+    setloading(true)
     const formData = new FormData();
     formData.append("image", selectedFile);
     // 'image' must match backend key
-  
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/upload-profile-pic`, {
         method: "POST",
         body: formData,
         credentials: "include",
       });
-  
+
       const data = await response.json();
       console.log("Upload Success:", data);
     } catch (error) {
       console.error("Upload failed:", error);
-    } finally{
-      setloading(false) 
+    } finally {
+      setloading(false)
     }
   };
   const [firstName, setFirstName] = useState("Mayank");
@@ -138,16 +175,41 @@ const Page = () => {
           </div>
 
           {/* Profile Information Form */}
-          <form className="my-10 rounded-md border border-gray-700 bg-gray-800 p-8 px-12">
-            <h2 className="text-lg font-semibold text-white">Work Experience</h2>
+          <div className="my-10 rounded-md border border-gray-700 bg-gray-800 p-8 px-12">
+
             <div className="flex flex-col gap-5 lg:flex-row">
+
               <div className="flex flex-col gap-2 lg:w-[48%]">
-                <label htmlFor="firstName">First Name</label>
+                <h2 className="text-lg font-semibold text-white">Currently Working in</h2>
+                <label htmlFor="firstName"></label>
                 <input type="text" id="firstName" className="form-input" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
               </div>
+
               <div className="flex flex-col gap-2 lg:w-[48%]">
-                <label htmlFor="lastName">Last Name</label>
-                <input type="text" id="lastName" className="form-input" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                <h2 className="text-lg font-semibold text-white">Add a Comapny to the database</h2>
+
+                <div className="flex gap-3 flex-col md:flex-row " >
+
+                  {companyLogoPreview ? (<Image
+                    src={companyLogoPreview || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
+                    alt="profile-Mayank"
+                    width={90}
+                    height={90}
+                    className="aspect-square w-[50px] rounded-full object-cover"
+                  />) : (<label htmlFor="companyprofilePic" className="bg-[#2C333F] rounded-md items-center text-center text-sm  cursor-pointer md:w-[20%] w-full  font-semibold text-white  p-1"><input
+                    type="file"
+                    id="companyprofilePic"
+                    className="hidden"
+                    onChange={handleCompanyLogoChange}
+                    accept="image/png, image/gif, image/jpeg"
+
+                  />
+                  Choose Logo
+                    </label>)}
+                  <input type="text" placeholder="Company name" id="CompanyName" className="form-input md:w-[40%] w-full " value={comapanyname} onChange={(e) => setcompanyname(e.target.value)} />
+                  <button className="bg-[#2C333F] text-white py-2 px-5 rounded-md md:w-[20%] w-full"  onClick={handlereset} >Reset </button>
+                  <button className={`bg-yellow-50 text-gray-900 py-2 px-5 rounded-md  md:w-[20%] w-full ${companyLogoPreview && comapanyname ? "" : "opacity-50 cursor-not-allowed bg-yellow-25"} `} onClick={handleCompanyUpload} >Upload </button>
+                </div>
               </div>
             </div>
 
@@ -155,44 +217,44 @@ const Page = () => {
               <button className="bg-gray-700 text-white py-2 px-5 rounded-md">Cancel</button>
               <button type="submit" className="bg-yellow-50 text-gray-900 py-2 px-5 rounded-md">Save</button>
             </div>
-          </form>
+          </div>
 
           <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] md:p-8 p-[15px] ">
-          <div className="flex w-full items-center justify-between">
-            <p className="text-lg font-semibold text-richblack-5">
-              Personal Details
-            </p>
-
-          </div>
-          <div className="flex max-w-[500px] justify-between  ">
-            <div className="flex flex-col gap-y-5">
-              <div>
-                <p className="mb-2 text-sm text-[#424854]">Name</p>
-                <p className="text-sm font-medium text-richblack-5">{user.displayName}</p>
-              </div>
-              <div>
-                <p className="mb-2 text-sm text-[#424854]">Batch</p>
-                <p className="text-sm font-medium text-richblack-5">
-                  {user.email.substring(0, 4)}
-                </p>
-              </div>
+            <div className="flex w-full items-center justify-between">
+              <p className="text-lg font-semibold text-richblack-5">
+                Personal Details
+              </p>
 
             </div>
-            <div className="flex flex-col gap-y-5">
-              <div>
-                <p className="mb-2 text-sm text-[#424854]">Branch</p>
-                <p className="text-sm font-medium text-richblack-5">{branch[user.email.substring(6, 8).toUpperCase() as keyof typeof branch] || "Unknown"}</p>
-              </div>
-              <div>
-                <p className="mb-2 text-sm text-[#424854]">Intitute Id</p>
-                <p className="text-sm font-medium text-richblack-5">
-                  {user.email.substring(0, 11).toUpperCase()}
-                </p>
-              </div>
+            <div className="flex max-w-[500px] justify-between  ">
+              <div className="flex flex-col gap-y-5">
+                <div>
+                  <p className="mb-2 text-sm text-[#424854]">Name</p>
+                  <p className="text-sm font-medium text-richblack-5">{user.displayName}</p>
+                </div>
+                <div>
+                  <p className="mb-2 text-sm text-[#424854]">Batch</p>
+                  <p className="text-sm font-medium text-richblack-5">
+                    {user.email.substring(0, 4)}
+                  </p>
+                </div>
 
+              </div>
+              <div className="flex flex-col gap-y-5">
+                <div>
+                  <p className="mb-2 text-sm text-[#424854]">Branch</p>
+                  <p className="text-sm font-medium text-richblack-5">{branch[user.email.substring(6, 8).toUpperCase() as keyof typeof branch] || "Unknown"}</p>
+                </div>
+                <div>
+                  <p className="mb-2 text-sm text-[#424854]">Intitute Id</p>
+                  <p className="text-sm font-medium text-richblack-5">
+                    {user.email.substring(0, 11).toUpperCase()}
+                  </p>
+                </div>
+
+              </div>
             </div>
           </div>
-        </div>
 
         </div>
       </div>}
