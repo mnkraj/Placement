@@ -177,7 +177,7 @@ const Page = () => {
           <Spinner />
         </div>
       )}
-      {!loading && <div className="h-[calc(100vh-3.5rem)] flex-1 overflow-auto mt-[30px] md:mt-[90px]">
+      {!loading && <div className="h-[calc(100vh-3.5rem)] flex-1  mt-[30px] md:mt-[90px]">
         <div className="mx-auto w-11/12 max-w-[1000px] py-10">
           <h1 className="mb-14 text-3xl font-medium text-white">Edit Profile</h1>
 
@@ -220,17 +220,15 @@ const Page = () => {
 
               <div className="flex flex-col gap-2 lg:w-[48%]">
                 <h2 className="text-lg font-semibold  text-white ">Professional Experience</h2>
-                <div className="flex justify-around gap-4">
-                  <div className="w-[50px]">
-                  {company && <Image
+                <div className="flex justify-center gap-4">
+                {company && <Image
                     src={companyoptions.find((e) => e._id === company)?.logo || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
                     alt="profile-Mayank"
                     width={90}
                     height={90}
                     className="aspect-square w-[50px] rounded-full object-cover"
                   />}
-                  </div>
-                  <select className="form-input w-[75%] " value={company} onChange={(e) => setcompany(e.target.value)} >
+                  <select className={`form-input  ${company ? "w-[75%]" : "w-full"}`} value={company} onChange={(e) => setcompany(e.target.value)} >
                     <option value="" disabled>
                       Select a company
                     </option>

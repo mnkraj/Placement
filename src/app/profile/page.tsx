@@ -106,7 +106,7 @@ const Page = () => {
         </div>
         <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] md:p-8 p-[15px] ">
           <div className="flex w-full items-center justify-between">
-            <p className="text-lg font-semibold text-richblack-5">About</p>
+            <p className="text-lg font-semibold text-richblack-5">Profesional Expereince</p>
             <button onClick={handlenavigateEditprofile} className="flex items-center bg-[#FFD60A] cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined">
               <span className="false">Edit</span>
               <svg
