@@ -101,7 +101,6 @@ const Page = () => {
     }
   };
   const [firstName, setFirstName] = useState("Mayank");
-  const [lastName, setLastName] = useState("Raj");
   useEffect(() => {
     async function fetchUser() {
       setloading(true)
