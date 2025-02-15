@@ -124,7 +124,17 @@ router.post("/add-company", loggedin, async (req, res) => {
     }
   });
 });
-
+router.post("/addprofessionalexperience", loggedin, async(req, res) => {
+  const {id} = req.body;
+  const user = req.user;
+  const found_user = await usermodel.findOne({ email: user.email });
+  if (!found_user) {
+    return res.json({ success: false, message: "User not found" });
+  }
+  found_user.professionalexperience = id;
+  await found_user.save()
+  return res.json({success : true , message : "Professional Experience Added Succesfully"})
+});
 // Logout user
 router.get("/logout", loggedin, (req, res) => {
   res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "none" });

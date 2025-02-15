@@ -19,7 +19,7 @@ const Page = () => {
   // const [profileImage, setProfileImage] = useState(null);
   const router = useRouter();
   const [loading, setloading] = useState(false)
-  const [comapanyname,setcompanyname] = useState("")
+  const [comapanyname, setcompanyname] = useState("")
   const [selectedCompanyLogo, setSelectedCompanyLogo] = useState<File | null>(null);
   const [companyLogoPreview, setCompanyLogoPreview] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -28,14 +28,17 @@ const Page = () => {
     if (file) {
       setSelectedCompanyLogo(file);
       setCompanyLogoPreview(URL.createObjectURL(file));
-      
+
     }
   };
-  const handlereset=()=>{
+  const handlereset = () => {
     setSelectedCompanyLogo(null)
     setCompanyLogoPreview("")
     setcompanyname("")
   }
+  // const [companyid, setcompanyid] = useState("")
+  const [company, setcompany] = useState("")
+  const [companyoptions, setcompanyoptions] = useState<{ _id: string; name: string; logo: string }[]>([]);;
   const handleCompanyUpload = async () => {
     if (!selectedCompanyLogo) return alert("Please select a company logo");
     setloading(true);
@@ -100,7 +103,44 @@ const Page = () => {
       setloading(false)
     }
   };
-  const [firstName, setFirstName] = useState("Mayank");
+  const hanldesave = async()=>{
+    if(!company) return ;
+    setloading(true)
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/addprofessionalexperience`, {
+        method: "POST",
+        body: JSON.stringify({ id: company }),
+        headers: {
+          "Content-Type": "application/json",  // Add this header
+        },
+        credentials: "include",
+      });
+      const data = await response.json();
+      if(!data.success)
+      {
+        console.log(data)
+      }
+      setloading(false)
+    } catch (error) {
+      console.error("Upload failed:", error);
+      setloading(false)
+    } finally {
+      
+    }
+  }
+
+  useEffect(() => {
+    async function fetchcomoanies() {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/company/getallcomapnies`, {
+        });
+        const data = await response.json();
+        if (data.success) setcompanyoptions(data.data)
+      } catch {
+      }
+    }
+    fetchcomoanies()
+  }, [])
   useEffect(() => {
     async function fetchUser() {
       setloading(true)
@@ -179,9 +219,28 @@ const Page = () => {
             <div className="flex flex-col gap-5 lg:flex-row">
 
               <div className="flex flex-col gap-2 lg:w-[48%]">
-                <h2 className="text-lg font-semibold text-white">Currently Working in</h2>
-                <label htmlFor="firstName"></label>
-                <input type="text" id="firstName" className="form-input" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                <h2 className="text-lg font-semibold  text-white ">Professional Experience</h2>
+                <div className="flex justify-around gap-4">
+                  <div className="w-[50px]">
+                  {company && <Image
+                    src={companyoptions.find((e) => e._id === company)?.logo || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
+                    alt="profile-Mayank"
+                    width={90}
+                    height={90}
+                    className="aspect-square w-[50px] rounded-full object-cover"
+                  />}
+                  </div>
+                  <select className="form-input w-[75%] " value={company} onChange={(e) => setcompany(e.target.value)} >
+                    <option value="" disabled>
+                      Select a company
+                    </option>
+                    {companyoptions.map((option) => (
+                      <option key={option._id} value={option._id}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div className="flex flex-col gap-2 lg:w-[48%]">
@@ -203,10 +262,10 @@ const Page = () => {
                     accept="image/png, image/gif, image/jpeg"
 
                   />
-                  Choose Logo
-                    </label>)}
+                    Choose Logo
+                  </label>)}
                   <input type="text" placeholder="Company name" id="CompanyName" className="form-input md:w-[40%] w-full " value={comapanyname} onChange={(e) => setcompanyname(e.target.value)} />
-                  <button className="bg-[#2C333F] text-white py-2 px-5 rounded-md md:w-[20%] w-full"  onClick={handlereset} >Reset </button>
+                  <button className="bg-[#2C333F] text-white py-2 px-5 rounded-md md:w-[20%] w-full" onClick={handlereset} >Reset </button>
                   <button className={`bg-yellow-50 text-gray-900 py-2 px-5 rounded-md  md:w-[20%] w-full ${companyLogoPreview && comapanyname ? "" : "opacity-50 cursor-not-allowed bg-yellow-25"} `} onClick={handleCompanyUpload} >Upload </button>
                 </div>
               </div>
@@ -214,7 +273,7 @@ const Page = () => {
 
             <div className="flex justify-end gap-2 mt-6">
               <button className="bg-gray-700 text-white py-2 px-5 rounded-md">Cancel</button>
-              <button type="submit" className="bg-yellow-50 text-gray-900 py-2 px-5 rounded-md">Save</button>
+              <button className="bg-yellow-50 text-gray-900 py-2 px-5 rounded-md"  onClick={hanldesave} >Save</button>
             </div>
           </div>
 

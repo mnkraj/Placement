@@ -2,6 +2,7 @@ const express = require("express");
 const connectDB = require("./config/Db");
 const passport = require("passport");
 require("./config/passport");
+const companyroutes = require("./routes/Company")
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
@@ -25,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
 app.use("/auth", authroutes);
-
+app.use("/company",companyroutes);
 const port = process.env.PORT;
 app.get("/", (req, res) => {
   res.json({ success: true, message: "Welcome to the server" });
