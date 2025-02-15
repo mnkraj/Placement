@@ -100,7 +100,7 @@ const Navbar = () => {
                   Login
                 </button>
               </Link>}
-              {user.email && <ProfileDropdown />}
+              {user.email && <ProfileDropdown img={user.image} />}
             </div>
 
             {/* Mobile Menu Button */}
@@ -168,7 +168,7 @@ const Navbar = () => {
               {!user.email && <Link className=" text-gray-950 dark:text-white" href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`}>
                 Login
               </Link>}
-              {user.email && <ProfileDropdown />}
+              {user.email && <ProfileDropdown img={user.image} />}
             </div>
           </div>
         )}

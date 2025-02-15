@@ -1,30 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { VscDashboard, VscSignOut } from "react-icons/vsc";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import Spinner from "../Spinner"
 import { useMediaQuery } from "react-responsive"; // For responsive behavior
 // import { setGlobal } from "next/dist/trace";
 
-export default function ProfileDropdown() {
+export default function ProfileDropdown({ img }: { img: string }) {
   const [loading, setloading] = useState(false)
-  const router = useRouter()
   const [open, setOpen] = useState(false);
-  const isMobile = useMediaQuery({ maxWidth: 768 }); // Mobile check
-  const [user, setUser] = useState({
-    "_id": "",
-    "googleId": "",
-    "email": "",
-    "displayName": "",
-    "firstName": "",
-    "lastName": "",
-    "image": "",
-    "createdAt": "",
-    "updatedAt": "",
-    "__v": 0
-  });
+  const isMobile = useMediaQuery({ maxWidth: 768 }); // Mobile che
 
   // Logout function
   const handlelogout = async () => {
@@ -41,18 +28,6 @@ export default function ProfileDropdown() {
       });
       const data = await res.json();
       console.log("Logout Response:", data); // Debugging
-      setUser({
-        "_id": "",
-        "googleId": "",
-        "email": "",
-        "displayName": "",
-        "firstName": "",
-        "lastName": "",
-        "image": "",
-        "createdAt": "",
-        "updatedAt": "",
-        "__v": 0
-      });
       setloading(false)
       window.location.reload()
     } catch (error) {
@@ -60,35 +35,12 @@ export default function ProfileDropdown() {
     } 
   };
 
-  useEffect(() => {
-    async function fetchUser() {
-      setloading(true)
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/profile`, {
-          credentials: "include",
-        });
-        const data = await response.json();
-        console.log("User Data:", data);
-
-        if (!data.success) {
-          router.push("/")
-        }
-        setUser(data.data);
-      } catch (error) {
-        setloading(false)
-        console.error("Error fetching user:", error);
-      }
-      finally {
-        setloading(false)
-      }
-    }
-    fetchUser();
-  }, [router]);
+  
 
   return (
     <div>
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-950 bg-opacity-75 z-50">
           <Spinner />
         </div>
       )}
@@ -101,7 +53,7 @@ export default function ProfileDropdown() {
               onClick={() => setOpen((prev) => !prev)}
             >
               <Image
-                src={user.image || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
+                src={img || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
                 className="aspect-square w-[30px] rounded-full object-cover"
                 width={90}
                 height={90}
