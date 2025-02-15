@@ -84,8 +84,8 @@ const Page = () => {
               <p className="text-lg font-semibold text-richblack-5">
                 {user.displayName}
               </p>
-              <p className="text-sm text-[#838894]">
-                {user.email}
+              <p className="text-lg text-[#838894]">
+                {user.email.substring(0, 11).toUpperCase()}
               </p>
             </div>
           </div>
