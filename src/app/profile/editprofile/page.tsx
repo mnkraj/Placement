@@ -111,8 +111,8 @@ const Page = () => {
               <Image
                 src={user.image || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
                 alt="profile-Mayank"
-                width={30}
-                height={30}
+                width={90}
+                height={90}
                 className="aspect-square w-[78px] rounded-full object-cover"
               />
               <div className="space-y-2">

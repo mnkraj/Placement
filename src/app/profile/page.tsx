@@ -74,8 +74,8 @@ const Page = () => {
         <div className="flex items-center justify-between rounded-md border-[1px] border-[rgb(44,51,63)] bg-[#161D29] md:p-8 p-[15px] ">
           <div className="flex items-center gap-x-4">
             <Image
-              width={30}
-              height={30}
+              width={90}
+              height={90}
               src={user.image || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
               alt="profile-Mayank"
               className="aspect-square w-[78px] rounded-full object-cover"

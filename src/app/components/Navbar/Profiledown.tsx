@@ -103,8 +103,8 @@ export default function ProfileDropdown() {
               <Image
                 src={user.image || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
                 className="aspect-square w-[30px] rounded-full object-cover"
-                width={30}
-                height={30}
+                width={90}
+                height={90}
                 alt="Profile"
               />
               <AiOutlineCaretDown className="text-sm text-richblack-100" />
