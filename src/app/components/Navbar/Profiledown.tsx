@@ -6,6 +6,7 @@ import Image from "next/image";
 // import { useRouter } from "next/navigation";
 import Spinner from "../Spinner"
 import { useMediaQuery } from "react-responsive"; // For responsive behavior
+import toast from "react-hot-toast";
 // import { setGlobal } from "next/dist/trace";
 
 export default function ProfileDropdown({ img }: { img: string }) {
@@ -15,6 +16,7 @@ export default function ProfileDropdown({ img }: { img: string }) {
 
   // Logout function
   const handlelogout = async () => {
+    const l =  toast.loading("Logging Out...")
     setloading(true)
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`, {
@@ -27,8 +29,15 @@ export default function ProfileDropdown({ img }: { img: string }) {
         }
       });
       const data = await res.json();
-      console.log("Logout Response:", data); // Debugging
       setloading(false)
+      toast.dismiss(l)
+      // console.log("Logout Response:", data); // Debugging
+      if(!data.success)
+      {
+        toast.error(data.message)
+        return ;
+      }
+      toast.success(data.message)
       window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}`
     } catch (error) {
       console.error("Error logging out:", error);

@@ -5,11 +5,12 @@ import TiptapEditor from "./Editor";
 import Spinner from "../components/Spinner"
 import Parsehtml from "./Parsehtml";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import Link from "next/link";
 import Image from "next/image";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
-import { CheckIcon } from '@heroicons/react/20/solid'
+// import { CheckIcon } from '@heroicons/react/20/solid'
 
 
 export default function Page() {
@@ -63,6 +64,7 @@ export default function Page() {
   const hanldepost = async () => {
     if (!title || !selected || !htmlContent) return;
     setloading(true)
+    const l =  toast.loading("Loading...")
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/post`, {
         method: "POST",
@@ -77,10 +79,21 @@ export default function Page() {
         credentials: "include",
       });
       const data = await response.json();
-      if (!data.success) {
-        console.log(data)
-      }
       setloading(false)
+      setSelected(null)
+      setHtmlContent("")
+      setitle("")
+      toast.dismiss(l)
+      // console.log("Logout Response:", data); // Debugging
+      if(!data.success)
+      {
+        toast.error(data.message)
+        return ;
+      }
+      toast.success(data.message)
+      toast.success("ThankYou For Sharing Your Experience..",{
+        icon : "🤗"
+      })
     } catch (error) {
       console.error("Upload failed:", error);
       setloading(false)
@@ -126,15 +139,15 @@ export default function Page() {
                 <ListboxOption
                   key={person._id}
                   value={person}
-                  className="group relative cursor-default py-2 pr-9 pl-3 text-white select-none data-focus:bg-indigo-600 data-focus:text-white data-focus:outline-hidden"
+                  className="group relative cursor-default hover:bg-yellow-5 hover:text-black py-2 pr-9 pl-3 text-white select-none data-focus:bg-indigo-600 data-focus:text-white data-focus:outline-hidden"
                 >
-                  <div className="flex items-center">
+                  <div className="flex items-center ">
                     <Image alt="" height={90} width={90} src={person.logo || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"} className="size-5 shrink-0 rounded-full" />
                     <span className="ml-3 block truncate font-normal group-data-selected:font-semibold">{person.name}</span>
                   </div>
 
                   <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-not-data-selected:hidden group-data-focus:text-white">
-                    <CheckIcon aria-hidden="true" className="size-5" />
+                    
                   </span>
                 </ListboxOption>
               ))}

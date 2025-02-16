@@ -34,10 +34,10 @@ const userSchema = new Schema({
     image: {
         type: String
     },
-    professionalexperience:{
+    professionalexperience:[{
         type: mongoose.Schema.Types.ObjectId,
         ref : "company"
-    }
+    }]
 }, {
     timestamps: true, // Automatically add createdAt and updatedAt fields
 });

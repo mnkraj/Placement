@@ -2,8 +2,11 @@
 import { useRouter } from "next/navigation";
 import Spinner from "../../components/Spinner"
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import Image from "next/image";
 import "./styles.css"
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
+import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
 
 const Page = () => {
   const branch = {
@@ -37,11 +40,12 @@ const Page = () => {
     setcompanyname("")
   }
   // const [companyid, setcompanyid] = useState("")
-  const [company, setcompany] = useState("")
+  const [selected, setSelected] = useState<{ _id: string; name: string; logo: string } | null>(null);
   const [companyoptions, setcompanyoptions] = useState<{ _id: string; name: string; logo: string }[]>([]);
   const handleCompanyUpload = async () => {
     if (!selectedCompanyLogo) return alert("Please select a company logo");
     setloading(true);
+    const l = toast.loading("Loading...")
     const formData = new FormData();
     formData.append("Logo", selectedCompanyLogo);
     formData.append("name", comapanyname);
@@ -52,7 +56,15 @@ const Page = () => {
         body: formData,
         credentials: "include",
       });
-      await response.json();
+      const data = await response.json();
+      setloading(false)
+      toast.dismiss(l)
+      // console.log("Logout Response:", data); // Debugging
+      if (!data.success) {
+        toast.error(data.message)
+        return ;
+      }
+      toast.success(data.message)
     } catch (error) {
       console.error("Company logo upload failed:", error);
     } finally {
@@ -84,6 +96,7 @@ const Page = () => {
   const handleUpload = async () => {
     if (!selectedFile) return alert("Please select a file");
     setloading(true)
+    const l = toast.loading("Loading...")
     const formData = new FormData();
     formData.append("image", selectedFile);
     // 'image' must match backend key
@@ -96,36 +109,48 @@ const Page = () => {
       });
 
       const data = await response.json();
-      console.log("Upload Success:", data);
+      setloading(false)
+      toast.dismiss(l)
+      // console.log("Logout Response:", data); // Debugging
+      if (!data.success) {
+        toast.error(data.message)
+        return ;
+      }
+      toast.success(data.message)
     } catch (error) {
       console.error("Upload failed:", error);
     } finally {
       setloading(false)
     }
   };
-  const hanldesave = async()=>{
-    if(!company) return ;
+  const hanldesave = async () => {
+    if (!selected) return;
     setloading(true)
+    const l = toast.loading("Loading...")
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/addprofessionalexperience`, {
         method: "POST",
-        body: JSON.stringify({ id: company }),
+        body: JSON.stringify({ id: selected._id }),
         headers: {
           "Content-Type": "application/json",  // Add this header
         },
         credentials: "include",
       });
       const data = await response.json();
-      if(!data.success)
-      {
-        console.log(data)
-      }
       setloading(false)
+      setSelected(null)
+      toast.dismiss(l)
+      // console.log("Logout Response:", data); // Debugging
+      if (!data.success) {
+        toast.error(data.message)
+        return ;
+      }
+      toast.success(data.message)
     } catch (error) {
       console.error("Upload failed:", error);
       setloading(false)
     } finally {
-      
+
     }
   }
 
@@ -218,30 +243,49 @@ const Page = () => {
 
             <div className="flex flex-col gap-5 lg:flex-row">
 
-              <div className="flex flex-col gap-2 lg:w-[48%]">
-                <h2 className="text-lg font-semibold  text-white ">Professional Experience</h2>
-                <div className="flex justify-center gap-4">
-                {company && <Image
-                    src={companyoptions.find((e) => e._id === company)?.logo || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
-                    alt="profile-Mayank"
-                    width={90}
-                    height={90}
-                    className="aspect-square w-[50px] rounded-full object-cover"
-                  />}
-                  <select className={`form-input  ${company ? "w-[75%]" : "w-full"}`} value={company} onChange={(e) => setcompany(e.target.value)} >
-                    <option value="" disabled>
-                      Select a company
-                    </option>
-                    {companyoptions.map((option) => (
-                      <option key={option._id} value={option._id}>
-                        {option.name}
-                      </option>
-                    ))}
-                  </select>
+              <div className="flex flex-col gap-2 w-full md:w-[48%]">
+                <h2 className="text-lg font-semibold  text-white "> Add a Company to Your Experience</h2>
+                <div className="w-full">
+                  <Listbox value={selected} onChange={setSelected} >
+                    <div className="relative ">
+                      <ListboxButton className="grid w-full  cursor-default grid-cols-1 rounded-md border-[rgb(44,51,63)] bg-[#161D29] py-1.5 pr-2 pl-3 text-left text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                        {selected && <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
+                          <Image alt="" height={90} width={90} src={selected.logo || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"} className="size-7 shrink-0 rounded-full" />
+                          <span className="mx-3 block truncate text-white">{selected.name}</span>
+                        </span>}
+                        <ChevronUpDownIcon
+                          aria-hidden="true"
+                          className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-500 sm:size-4"
+                        />
+                      </ListboxButton>
+
+                      <ListboxOptions
+                        transition
+                        className="absolute z-10 mt-1 w-full max-h-56 overflow-auto rounded-md bg-[rgb(0,8,20)] py-1 text-base ring-1 shadow-lg  focus:outline-hidden data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
+                      >
+                        {companyoptions && companyoptions.map((person) => (
+                          <ListboxOption
+                            key={person._id}
+                            value={person}
+                            className="group relative cursor-default hover:bg-yellow-5 hover:text-black py-2 pr-9 pl-3 text-white select-none data-focus:bg-indigo-600 data-focus:text-white data-focus:outline-hidden"
+                          >
+                            <div className="flex items-center ">
+                              <Image alt="" height={90} width={90} src={person.logo || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"} className="size-5 shrink-0 rounded-full" />
+                              <span className="ml-3 block truncate font-normal group-data-selected:font-semibold">{person.name}</span>
+                            </div>
+
+                            <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-not-data-selected:hidden group-data-focus:text-white">
+
+                            </span>
+                          </ListboxOption>
+                        ))}
+                      </ListboxOptions>
+                    </div>
+                  </Listbox>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2 lg:w-[48%]">
+              <div className="flex flex-col gap-2 md:w-[48%]">
                 <h2 className="text-lg font-semibold text-white">Add a Comapny to the database</h2>
 
                 <div className="flex gap-3 flex-col md:flex-row " >
@@ -271,7 +315,7 @@ const Page = () => {
 
             <div className="flex justify-end gap-2 mt-6">
               <button className="bg-gray-700 text-white py-2 px-5 rounded-md">Cancel</button>
-              <button className="bg-yellow-50 text-gray-900 py-2 px-5 rounded-md"  onClick={hanldesave} >Save</button>
+              <button className="bg-yellow-50 text-gray-900 py-2 px-5 rounded-md" onClick={hanldesave} >Save</button>
             </div>
           </div>
 

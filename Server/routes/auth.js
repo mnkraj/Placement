@@ -72,7 +72,11 @@ router.post("/upload-profile-pic", loggedin, async (req, res) => {
       });
       found_user.image = result.secure_url;
       await found_user.save();
-      return res.json({ success: true, imageUrl: result.secure_url });
+      return res.json({
+        success: true,
+        message:
+          "Image Changed Successfully , it will be reflected once You login again",
+      });
     } catch (error) {
       console.error("Cloudinary Upload Error:", error);
       return res.status(500).json({ success: false, message: "Upload failed" });
@@ -138,7 +142,10 @@ router.post("/addprofessionalexperience", loggedin, async (req, res) => {
   if (!found_user) {
     return res.json({ success: false, message: "User not found" });
   }
-  found_user.professionalexperience = id;
+  if (found_user.professionalexperience.includes(id)) {
+    return res.json({ success: false, message: "Company already added" });
+  }
+  found_user.professionalexperience.push(id);
   await found_user.save();
   return res.json({
     success: true,
@@ -148,20 +155,18 @@ router.post("/addprofessionalexperience", loggedin, async (req, res) => {
 router.post("/post", loggedin, async (req, res) => {
   const { company, title, html } = req.body;
   const user = req.user;
-  if(!company || !title || !html || !user) return res.json({success : false , message : "Bad Auth"})
+  if (!company || !title || !html || !user)
+    return res.json({ success: false, message: "Bad Auth" });
   try {
     const newpost = await new post({
-      company : company,
-      title : title,
-      html : html,
-      createdby : user.email
-  }).save();
+      company: company,
+      title: title,
+      html: html,
+      createdby: user.email,
+    }).save();
 
-  res.json({success : true , message : "Post created successfully"})
-  } catch (error) {
-    
-  }
-
+    res.json({ success: true, message: "Post created successfully" });
+  } catch (error) {}
 });
 
 // Logout user
