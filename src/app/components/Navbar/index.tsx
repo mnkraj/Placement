@@ -8,7 +8,7 @@ import ProfileDropdown from "./Profiledown";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [loading,setloading] = useState(false)
+  const [loading, setloading] = useState(false)
   const [searchQuery, setSearchQuery] = useState("");
   const pathname = usePathname(); // Get current route
   const [user, setUser] = useState({
@@ -32,8 +32,8 @@ const Navbar = () => {
         const data = await response.json();
         // console.log(data)
         if (!data.success) {
-          return ;
-           // Save user details
+          return;
+          // Save user details
         }
         setUser(data.data);
       } catch (error) {
@@ -77,7 +77,6 @@ const Navbar = () => {
                 { name: "Home", href: "/" },
                 { name: "Blogs", href: "/blogs" },
                 { name: "Blog", href: "/blog" },
-                { name: "Post", href: "/createPost" },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -99,6 +98,13 @@ const Navbar = () => {
                 <button className="rounded-[8px] border border-[#445163] bg-[#161D29] px-[12px] py-[8px] text-[#AFBEBF]">
                   Login
                 </button>
+              </Link>}
+              {user.email && <Link
+                href="/createPost"
+                className={`${pathname === "/createPost" ? "text-[#FFE83D]" : "text-gray-950 dark:text-white"
+                  }`}
+              >
+                Post
               </Link>}
               {user.email && <ProfileDropdown img={user.image} />}
             </div>
@@ -150,7 +156,6 @@ const Navbar = () => {
                 { name: "Home", href: "/" },
                 { name: "Blogs", href: "/blogs" },
                 { name: "Blog", href: "/blog" },
-                { name: "Post", href: "/createPost" },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -168,6 +173,13 @@ const Navbar = () => {
               {!user.email && <Link className=" text-gray-950 dark:text-white" href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`}>
                 Login
               </Link>}
+              {user.email && <Link
+                  href="/createPost"
+                  className={`${pathname === "/createPost" ? "text-[#FFE83D]" : "text-gray-950 dark:text-white"
+                    } `}
+                >
+                  Post
+                </Link> }
               {user.email && <ProfileDropdown img={user.image} />}
             </div>
           </div>
