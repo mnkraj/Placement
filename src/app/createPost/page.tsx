@@ -12,25 +12,14 @@ import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
 import { CheckIcon } from '@heroicons/react/20/solid'
 
 
-export default function page() {
+export default function Page() {
   const router = useRouter();
   const [title, setitle] = useState("")
   const [htmlContent, setHtmlContent] = useState("");
   const [companyoptions, setcompanyoptions] = useState<{ _id: string; name: string; logo: string }[]>([]);
   const [loading, setloading] = useState(false)
   const [selected, setSelected] = useState<{ _id: string; name: string; logo: string } | null>(null);
-  const [user, setUser] = useState({
-      "_id": "",
-      "googleId": "",
-      "email": "",
-      "displayName": "",
-      "firstName": "",
-      "lastName": "",
-      "image": "",
-      "createdAt": "",
-      "updatedAt": "",
-      "__v": 0
-    })
+
     useEffect(() => {
       async function fetchUser() {
         setloading(true)
@@ -46,18 +35,18 @@ export default function page() {
             return;
             // Save user details
           }
-          setUser(data.data);
+          // setUser(data.data);
           setloading(false)
         } catch (error) {
           console.error("Error fetching user:", error);
-  
+          setloading(false)
         }
       }
       fetchUser();
   
       // console.log(user)
     }, [router]);
-
+   
   useEffect(() => {
     async function fetchcomoanies() {
       try {
@@ -69,6 +58,7 @@ export default function page() {
       }
     }
     fetchcomoanies()
+    
   }, [])
   const hanldepost = async()=>{
     if(!title || !selected || !htmlContent) return ;
