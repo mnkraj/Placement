@@ -29,7 +29,7 @@ export default function ProfileDropdown({ img }: { img: string }) {
       const data = await res.json();
       console.log("Logout Response:", data); // Debugging
       setloading(false)
-      window.location.reload()
+      window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}`
     } catch (error) {
       console.error("Error logging out:", error);
     } 

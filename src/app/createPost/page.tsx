@@ -7,7 +7,7 @@ import Parsehtml from "./Parsehtml";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import {  Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
 import { CheckIcon } from '@heroicons/react/20/solid'
 
@@ -20,33 +20,33 @@ export default function Page() {
   const [loading, setloading] = useState(false)
   const [selected, setSelected] = useState<{ _id: string; name: string; logo: string } | null>(null);
 
-    useEffect(() => {
-      async function fetchUser() {
-        setloading(true)
-        try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/profile`, {
-            credentials: "include",
-          });
-          const data = await response.json();
-          // console.log(data)
-          if (!data.success) {
-            setloading(false)
-            router.push("/")
-            return;
-            // Save user details
-          }
-          // setUser(data.data);
+  useEffect(() => {
+    async function fetchUser() {
+      setloading(true)
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/profile`, {
+          credentials: "include",
+        });
+        const data = await response.json();
+        // console.log(data)
+        if (!data.success) {
           setloading(false)
-        } catch (error) {
-          console.error("Error fetching user:", error);
-          setloading(false)
+          router.push("/")
+          return;
+          // Save user details
         }
+        // setUser(data.data);
+        setloading(false)
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        setloading(false)
       }
-      fetchUser();
-  
-      // console.log(user)
-    }, [router]);
-   
+    }
+    fetchUser();
+
+    // console.log(user)
+  }, [router]);
+
   useEffect(() => {
     async function fetchcomoanies() {
       try {
@@ -58,27 +58,26 @@ export default function Page() {
       }
     }
     fetchcomoanies()
-    
+
   }, [])
-  const hanldepost = async()=>{
-    if(!title || !selected || !htmlContent) return ;
+  const hanldepost = async () => {
+    if (!title || !selected || !htmlContent) return;
     setloading(true)
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/post`, {
         method: "POST",
-        body: JSON.stringify({ 
-          company : selected._id,
-          title : title,
-          html : htmlContent
-         }),
+        body: JSON.stringify({
+          company: selected._id,
+          title: title,
+          html: htmlContent
+        }),
         headers: {
           "Content-Type": "application/json",  // Add this header
         },
         credentials: "include",
       });
       const data = await response.json();
-      if(!data.success)
-      {
+      if (!data.success) {
         console.log(data)
       }
       setloading(false)
@@ -86,7 +85,7 @@ export default function Page() {
       console.error("Upload failed:", error);
       setloading(false)
     } finally {
-      
+
     }
   }
 
@@ -97,7 +96,7 @@ export default function Page() {
           <Spinner />
         </div>
       )}
-      <div className="mx-auto w-11/12 max-w-[1000px] py-10 h-[120px]  mt-[30px] md:mt-[90px]">
+      {!loading && <div className="mx-auto w-11/12 max-w-[1000px] py-10 h-[120px]  mt-[30px] md:mt-[90px]">
         <h1 className=" text-3xl font-medium text-richblack-5">
           Create a new Post
         </h1>
@@ -163,8 +162,8 @@ export default function Page() {
         <div className="mb-10 w-full flex justify-end">
           <button onClick={hanldepost} className={`flex items-center bg-[#FFD60A] ${selected && title && htmlContent ? "cursor-pointer" : "disabled cursor-not-allowed"}  gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined`}>Post</button>
         </div>
-        <Parsehtml content={htmlContent}/>
-      </div>
+        <Parsehtml content={htmlContent} />
+      </div>}
     </div>
   )
 }
