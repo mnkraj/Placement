@@ -20,18 +20,26 @@ router.get(
 // Callback route for Google to redirect to
 router.get(
   "/google/callback",
-  passport.authenticate("google", { session: false }),
-  (req, res) => {
-    const token = req.user.token;
+  (req, res, next) => {
+    passport.authenticate("google", { session: false }, (err, user, info) => {
+      if (err) return res.status(500).json({ message: "Server error", error: err });
 
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+      if (!user) {
+        // If user is not authenticated, return the failure message
+        return res.json({success : false , message: info?.message || "Authentication failed" });
+      }
 
-    res.redirect(`${process.env.FRONTEND_URL}`);
+      const token = user.token;
+
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        maxAge: 60 * 60 * 1000, // 7 days
+      });
+
+      res.redirect(`${process.env.FRONTEND_URL}`);
+    })(req, res, next);
   }
 );
 

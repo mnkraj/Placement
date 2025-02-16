@@ -10,7 +10,7 @@ passport.use(new GoogleStrategy({
     callbackURL: `${process.env.DEPLOYED_URL}/auth/google/callback`,
 }, async (accessToken, refreshToken, profile, done) => {
     try {
-        // if(!profile.emails[0].value.endsWith("@nitjsr.ac.in")) return done(null , false , {message : "Only nitjsr Emails are allowed"})
+        if(!profile.emails[0].value.endsWith("@nitjsr.ac.in")) return done(null , false , {message : "Only nitjsr Emails are allowed to Log In"})
         let user = await User.findOne({ googleId: profile.id });
 
         if (!user) {
@@ -32,7 +32,7 @@ passport.use(new GoogleStrategy({
             firstName: user.firstName,
             lastName: user.lastName,
             image: user.image
-        }, process.env.JWT_SECRET, { expiresIn: "7d" });
+        }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
         return done(null, { user, token });
     } catch (error) {
