@@ -38,7 +38,7 @@ const Page = () => {
   }
   // const [companyid, setcompanyid] = useState("")
   const [company, setcompany] = useState("")
-  const [companyoptions, setcompanyoptions] = useState<{ _id: string; name: string; logo: string }[]>([]);;
+  const [companyoptions, setcompanyoptions] = useState<{ _id: string; name: string; logo: string }[]>([]);
   const handleCompanyUpload = async () => {
     if (!selectedCompanyLogo) return alert("Please select a company logo");
     setloading(true);

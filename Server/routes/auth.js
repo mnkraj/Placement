@@ -2,7 +2,8 @@ const express = require("express");
 const passport = require("passport");
 const usermodel = require("../models/User");
 const jwt = require("jsonwebtoken");
-const company = require("../models/Companymodel")
+const post = require("../models/Posts");
+const company = require("../models/Companymodel");
 const formidable = require("formidable");
 const cloudinary = require("../config/Cloudinary");
 const loggedin = require("../Middleware/Authmiddleware");
@@ -86,16 +87,22 @@ router.post("/add-company", loggedin, async (req, res) => {
   form.parse(req, async (err, fields, files) => {
     if (err) {
       console.error("Formidable Error:", err);
-      return res.status(500).json({ success: false, message: "Error parsing form data" });
+      return res
+        .status(500)
+        .json({ success: false, message: "Error parsing form data" });
     }
 
     const companyName = fields.name?.[0]; // Extract company name from FormData
     if (!companyName) {
-      return res.status(400).json({ success: false, message: "Company name is required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Company name is required" });
     }
 
     if (!files.Logo) {
-      return res.status(400).json({ success: false, message: "No logo uploaded" });
+      return res
+        .status(400)
+        .json({ success: false, message: "No logo uploaded" });
     }
 
     const file = files.Logo[0]; // Get uploaded file
@@ -124,17 +131,39 @@ router.post("/add-company", loggedin, async (req, res) => {
     }
   });
 });
-router.post("/addprofessionalexperience", loggedin, async(req, res) => {
-  const {id} = req.body;
+router.post("/addprofessionalexperience", loggedin, async (req, res) => {
+  const { id } = req.body;
   const user = req.user;
   const found_user = await usermodel.findOne({ email: user.email });
   if (!found_user) {
     return res.json({ success: false, message: "User not found" });
   }
   found_user.professionalexperience = id;
-  await found_user.save()
-  return res.json({success : true , message : "Professional Experience Added Succesfully"})
+  await found_user.save();
+  return res.json({
+    success: true,
+    message: "Professional Experience Added Succesfully",
+  });
 });
+router.post("/post", loggedin, async (req, res) => {
+  const { company, title, html } = req.body;
+  const user = req.user;
+  if(!company || !title || !html || !user) return res.json({success : false , message : "Bad Auth"})
+  try {
+    const newpost = await new post({
+      company : company,
+      title : title,
+      html : html,
+      createdby : user.email
+  }).save();
+
+  res.json({success : true , message : "Post created successfully"})
+  } catch (error) {
+    
+  }
+
+});
+
 // Logout user
 router.get("/logout", loggedin, (req, res) => {
   res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "none" });

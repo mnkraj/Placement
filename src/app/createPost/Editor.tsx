@@ -7,15 +7,20 @@ import Bold from "@tiptap/extension-bold";
 import Italic from "@tiptap/extension-italic";
 import Underline from "@tiptap/extension-underline";
 import { FiBold, FiItalic, FiUnderline } from "react-icons/fi";
+interface TiptapEditorProps {
+  setHtmlContent: (content: string) => void;
+}
 
-const TiptapEditor = () => {
-  const [content, setContent] = useState("");
+const TiptapEditor: React.FC<TiptapEditorProps> = ({ setHtmlContent }) => {
+  const [content, setContent] = useState<string>("");
 
   const editor = useEditor({
     extensions: [StarterKit, Bold, Italic, Underline],
     content: content,
     onUpdate: ({ editor }) => {
-      setContent(editor.getHTML());
+      const html =  editor.getHTML()
+      setContent(html);
+      setHtmlContent(html)
     },
   });
 
@@ -24,13 +29,13 @@ const TiptapEditor = () => {
   }
 
   return (
-    <div className="w-[80%] md:max-w-2xl mx-auto p-4 bg-[#151b23] shadow-lg rounded-xl border border-white/10">
+    <div className="w-full mb-3 mx-auto p-4 bg-[#161D29] shadow-lg rounded-xl border border-white/10">
       {/* Toolbar */}
-      <div className="flex items-center gap-2 border-b border-white/10 p-2">
+      <div className="flex items-center gap-2 text-white border-b border-white/10 p-2">
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={`p-2 rounded-md transition-all ${
-            editor.isActive("bold") ? "bg-white/20" : "hover:bg-white/10"
+            editor.isActive("bold") ? "bg-[#FFD60A] text-[#000814]" : "hover:bg-yellow-25"
           }`}
         >
           <FiBold className="text-lg" />
@@ -38,7 +43,7 @@ const TiptapEditor = () => {
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={`p-2 rounded-md transition-all ${
-            editor.isActive("italic") ? "bg-white/20" : "hover:bg-white/10"
+            editor.isActive("italic") ? "bg-[#FFD60A] text-[#000814]" : "hover:bg-yellow-25"
           }`}
         >
           <FiItalic className="text-lg" />
@@ -46,7 +51,7 @@ const TiptapEditor = () => {
         <button
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           className={`p-2 rounded-md transition-all ${
-            editor.isActive("underline") ? "bg-white/20" : "hover:bg-white/10"
+            editor.isActive("underline") ? "bg-[#FFD60A] text-[#000814]" : "hover:bg-yellow-25"
           }`}
         >
           <FiUnderline className="text-lg" />

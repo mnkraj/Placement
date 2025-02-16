@@ -9,12 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.2.0",
     "@tiptap/extension-bold": "^2.11.5",
     "@tiptap/extension-italic": "^2.11.5",
     "@tiptap/extension-underline": "^2.11.5",
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "axios": "^1.7.9",
+    "html-react-parser": "^5.2.2",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
