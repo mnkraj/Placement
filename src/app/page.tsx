@@ -25,7 +25,7 @@ const Page = () => {
   const fetchBlogs = async () => {
     setloading(true)
     try {
-      const response = await axios.get("http://localhost:5000/posts/getallposts");
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/getallposts`);
       if (response.data.success) {
         setBlogs(response.data.data);
       }
