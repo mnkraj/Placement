@@ -1,5 +1,6 @@
 // models/User.js
 const mongoose = require('mongoose');
+const { type } = require('os');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -37,7 +38,10 @@ const userSchema = new Schema({
     professionalexperience:[{
         type: mongoose.Schema.Types.ObjectId,
         ref : "company"
-    }]
+    }],
+    linurl :{
+        type : String
+    }
 }, {
     timestamps: true, // Automatically add createdAt and updatedAt fields
 });

@@ -18,34 +18,44 @@ router.get(
 );
 
 // Callback route for Google to redirect to
-router.get(
-  "/google/callback",
-  (req, res, next) => {
-    passport.authenticate("google", { session: false }, (err, user, info) => {
-      if (err) return res.status(500).json({ message: "Server error", error: err });
+router.get("/google/callback", (req, res, next) => {
+  passport.authenticate("google", { session: false }, (err, user, info) => {
+    if (err)
+      return res.status(500).json({ message: "Server error", error: err });
 
-      if (!user) {
-        // If user is not authenticated, return the failure message
-        return res.json({success : false , message: info?.message || "Authentication failed" });
-      }
-
-      const token = user.token;
-
-      res.cookie("jwt", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 60 * 60 * 1000, // 7 days
+    if (!user) {
+      // If user is not authenticated, return the failure message
+      return res.json({
+        success: false,
+        message: info?.message || "Authentication failed",
       });
+    }
 
-      res.redirect(`${process.env.FRONTEND_URL}`);
-    })(req, res, next);
-  }
-);
+    const token = user.token;
+
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 60 * 60 * 1000, // 7 days
+    });
+
+    res.redirect(`${process.env.FRONTEND_URL}`);
+  })(req, res, next);
+});
 
 // Get user profile
-router.get("/profile", loggedin, (req, res) => {
-  res.json({ success: true, data: req.user });
+router.get("/profile", loggedin, async (req, res) => {
+  const userdata = await usermodel.findOne({ email: req.user.email })
+  const user = await usermodel
+    .findOne({ email: req.user.email })
+    .populate("professionalexperience");
+
+  // Extract company details
+  const companies = await company.find({
+    _id: { $in: user.professionalexperience },
+  });
+  res.json({ success: true, data: userdata, companies: companies });
   // console.log(req.user)
 });
 
@@ -144,16 +154,22 @@ router.post("/add-company", loggedin, async (req, res) => {
   });
 });
 router.post("/addprofessionalexperience", loggedin, async (req, res) => {
-  const { id } = req.body;
+  const { id, linurl } = req.body;
   const user = req.user;
   const found_user = await usermodel.findOne({ email: user.email });
   if (!found_user) {
     return res.json({ success: false, message: "User not found" });
   }
-  if (found_user.professionalexperience.includes(id)) {
-    return res.json({ success: false, message: "Company already added" });
+  if (id) {
+    if (found_user.professionalexperience.includes(id)) {
+      return res.json({ success: false, message: "Company already added" });
+    }
+    found_user.professionalexperience.push(id);
   }
-  found_user.professionalexperience.push(id);
+  if(linurl)
+  {
+    found_user.linurl = linurl;
+  }
   await found_user.save();
   return res.json({
     success: true,

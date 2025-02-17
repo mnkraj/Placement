@@ -41,6 +41,7 @@ const Page = () => {
   }
   // const [companyid, setcompanyid] = useState("")
   const [selected, setSelected] = useState<{ _id: string; name: string; logo: string } | null>(null);
+  const [lin, setlin] = useState("")
   const [companyoptions, setcompanyoptions] = useState<{ _id: string; name: string; logo: string }[]>([]);
   const handleCompanyUpload = async () => {
     if (!selectedCompanyLogo) return alert("Please select a company logo");
@@ -62,7 +63,7 @@ const Page = () => {
       // console.log("Logout Response:", data); // Debugging
       if (!data.success) {
         toast.error(data.message)
-        return ;
+        return;
       }
       toast.success(data.message)
     } catch (error) {
@@ -114,7 +115,7 @@ const Page = () => {
       // console.log("Logout Response:", data); // Debugging
       if (!data.success) {
         toast.error(data.message)
-        return ;
+        return;
       }
       toast.success(data.message)
     } catch (error) {
@@ -124,13 +125,30 @@ const Page = () => {
     }
   };
   const hanldesave = async () => {
-    if (!selected) return;
+    if (!selected && !lin) return;
+    const body = {id : "" , linurl : ""};
+    if (selected) body.id = selected._id;
+    const isValidURL = (str: string): boolean => {
+      try {
+        new URL(str); // Throws an error if invalid
+        return true;
+      } catch {
+        return false;
+      }
+    };
+    
+    if (lin && isValidURL(lin)) {
+      body.linurl = lin;
+    } else if (lin) {
+      toast.error("Invalid URL format!");
+      return;
+    }
     setloading(true)
     const l = toast.loading("Loading...")
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/addprofessionalexperience`, {
         method: "POST",
-        body: JSON.stringify({ id: selected._id }),
+        body: JSON.stringify(body),
         headers: {
           "Content-Type": "application/json",  // Add this header
         },
@@ -143,7 +161,7 @@ const Page = () => {
       // console.log("Logout Response:", data); // Debugging
       if (!data.success) {
         toast.error(data.message)
-        return ;
+        return;
       }
       toast.success(data.message)
     } catch (error) {
@@ -282,6 +300,9 @@ const Page = () => {
                       </ListboxOptions>
                     </div>
                   </Listbox>
+                </div>
+                <div className="">
+                  <input type="url" value={lin} onChange={(e) => setlin(e.target.value)} className="form-input w-full" placeholder="Enter Your LinkedIn URL" />
                 </div>
               </div>
 
