@@ -58,7 +58,7 @@ const Navbar = () => {
         <div className="bg-[rgb(0,8,20)] ">
           <div className="flex h-14 items-center justify-between gap-4 md:h-[75px] px-4 sm:px-6">
             <Link className="shrink-0 text-2xl font-semibold w-[150px]" aria-label="Home" href="/">
-              <Image src="/logo.png" className="w-full" height={90} width={90} alt="" />
+              <Image src="/logo.png" className="w-full" height={150} width={150} alt="" />
             </Link>
 
             {/* Search Bar */}
