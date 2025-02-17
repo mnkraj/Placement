@@ -10,7 +10,7 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning lang="en">
-      <body className="antialiased bg-[rgb(0,8,20)]">
+      <body className="antialiased bg-[rgb(0,8,20)] ">
         <Toaster />
         <Navbar />
         {/* <div className="grid min-h-dvh grid-cols-1 md:grid-cols-[1fr_minmax(0,1200px)_1fr] justify-center pt-14 [--gutter-width:2.5rem]"> */}
@@ -19,7 +19,7 @@ export default function RootLayout({
 
           {/* Main content area */}
           {/* <div className="w-full max-w-5xl mx-auto px-6 sm:px-12 grid gap-24 pb-24 text-gray-950 sm:gap-40 md:pb-40 dark:text-white"> */}
-            <div className="container flex flex-col justify-center align-bottom">
+            <div className=" flex flex-col justify-center align-bottom ">
             {children}
             </div>
           {/* </div> */}

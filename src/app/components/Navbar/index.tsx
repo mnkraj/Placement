@@ -54,9 +54,9 @@ const Navbar = () => {
           <Spinner />
         </div>
       )}
-      {!loading && <div className="fixed container inset-x-0 top-0 z-10 border-b border-gray-950/5 dark:border-white/10">
-        <div className="bg-[rgb(0,8,20)] ">
-          <div className="flex h-14 items-center justify-between gap-4 md:h-[75px] px-4 sm:px-6">
+      {!loading && <div className="fixed inset-x-0 top-0 z-10 border-b   border-gray-950/5 dark:border-white/10">
+        <div className="bg-[rgb(0,8,20)] mx-0 md:mx-5">
+          <div className="flex h-14 items-center justify-between gap-4  md:h-[75px] px-4 sm:px-6">
             <Link className="shrink-0 text-2xl font-semibold w-[150px]" aria-label="Home" href="/">
               <Image src="/logo.png" className="w-full" height={150} width={150} alt="" />
             </Link>
@@ -82,7 +82,7 @@ const Navbar = () => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`${pathname === link.href ? "text-[#FFE83D]" : "text-gray-950 dark:text-white"
+                  className={`${pathname === link.href ? "text-[#FFE83D]" : "text-white"
                     }`}
                 >
                   {link.name}
@@ -90,7 +90,7 @@ const Navbar = () => {
               ))}
 
               <Link
-                className="text-gray-950 dark:text-white"
+                className="text-white"
                 href="https://github.com/mnkraj/Placement"
               >
                 <GithubIcon />
@@ -102,7 +102,7 @@ const Navbar = () => {
               </Link>}
               {user.email && <Link
                 href="/createPost"
-                className={`${pathname === "/createPost" ? "text-[#FFE83D]" : "text-gray-950 dark:text-white"
+                className={`${pathname === "/createPost" ? "text-[#FFE83D]" : "text-white"
                   }`}
               >
                 Post
@@ -114,7 +114,7 @@ const Navbar = () => {
             <div className="flex items-center gap-2.5 md:hidden">
               <button
                 type="button"
-                className="relative inline-grid size-7 place-items-center rounded-md text-gray-950 hover:bg-gray-950/5 dark:text-white dark:hover:bg-white/10"
+                className="relative inline-grid size-7 place-items-center rounded-md  hover:bg-gray-950/5 text-white dark:hover:bg-white/10"
                 aria-label="Toggle navigation"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
@@ -142,7 +142,7 @@ const Navbar = () => {
 
         {/* Mobile Menu with Search Bar */}
         {isMenuOpen && (
-          <div className="lg:hidden bg-white dark:bg-gray-950 px-4 sm:px-6 border-t border-gray-950/5 dark:border-white/10">
+          <div className="lg:hidden bg-gray-950 px-4 sm:px-6 border-t border-gray-950/5 dark:border-white/10">
             <div className="py-4 flex flex-col gap-4 text-xl">
               {/* Search Bar for Mobile */}
               <input
@@ -161,22 +161,22 @@ const Navbar = () => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`${pathname === link.href ? "text-[#FFE83D]" : "text-gray-950 dark:text-white"
+                  className={`${pathname === link.href ? "text-[#FFE83D]" : "text-white"
                     } `}
                 >
                   {link.name}
                 </Link>
               ))}
 
-              <Link className=" text-gray-950 dark:text-white" href="https://github.com/mnkraj/Placement">
+              <Link className=" text-white" href="https://github.com/mnkraj/Placement">
                 Github
               </Link>
-              {!user.email && <Link className=" text-gray-950 dark:text-white" href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`}>
+              {!user.email && <Link className=" text-white" href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`}>
                 Login
               </Link>}
               {user.email && <Link
                   href="/createPost"
-                  className={`${pathname === "/createPost" ? "text-[#FFE83D]" : "text-gray-950 dark:text-white"
+                  className={`${pathname === "/createPost" ? "text-[#FFE83D]" : "text-white"
                     } `}
                 >
                   Post

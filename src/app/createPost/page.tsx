@@ -203,7 +203,7 @@ export default function Page() {
           ) : (
             <label
               htmlFor="dropzone-file"
-              className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-[rgb(0,8,20)] dark:hover:bg-white/10  hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 "
+              className="flex flex-col items-center justify-center w-full h-64 border-2  border-dashed rounded-lg cursor-pointer bg-[rgb(0,8,20)] hover:bg-white/10  hover:bg-gray-100 border-gray-600 hover:border-gray-500 "
             >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 <svg

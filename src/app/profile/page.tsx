@@ -81,7 +81,7 @@ const Page = () => {
       {!loading && (
         <section className=" py-8 antialiased bg-[rgb(0,8,20)]  md:py-8 mt-[30px] md:mt-[90px]">
           <div className="mx-auto max-w-screen-lg px-4 2xl:px-0">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white sm:text-2xl md:mb-6">
+            <h2 className="mb-4 text-2xl font-semibold text-white sm:text-2xl md:mb-6">
               My Profile
             </h2>
 
@@ -101,24 +101,24 @@ const Page = () => {
                         {" "}
                         Student{" "}
                       </span>
-                      <h2 className="flex items-center text-xl font-bold leading-none text-gray-900 dark:text-white sm:text-2xl">
+                      <h2 className="flex items-center text-xl font-bold leading-none text-white sm:text-2xl">
                         {user.displayName}
                       </h2>
                     </div>
                   </div>
                   <dl className="">
-                    <dt className="font-semibold text-gray-900 dark:text-white">
+                    <dt className="font-semibold text-white">
                       Email Address
                     </dt>
-                    <dd className="text-gray-500 dark:text-gray-400">
+                    <dd className="text-gray-400">
                       {user.email}
                     </dd>
                   </dl>
                   <dl>
-                    <dt className="font-semibold text-gray-900 dark:text-white">
+                    <dt className="font-semibold text-white">
                       Branch
                     </dt>
-                    <dd className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                    <dd className="flex items-center gap-1 text-gray-400">
 
                       {branch[user.email.substring(6, 8).toUpperCase() as keyof typeof branch] || "Unknown"}
                     </dd>
@@ -127,32 +127,32 @@ const Page = () => {
                 </div>
                 <div className="space-y-4">
                   <dl>
-                    <dt className="font-semibold text-gray-900 dark:text-white">
+                    <dt className="font-semibold text-white">
                       LinkedIn Profile
                     </dt>
-                    <dd className="text-gray-500 dark:text-gray-400">
+                    <dd className="text-gray-400">
                       {user.linurl && user.linurl}
                     </dd>
                   </dl>
                   <dl>
-                    <dt className="font-semibold text-gray-900 dark:text-white">
+                    <dt className="font-semibold text-white">
                       Batch
                     </dt>
-                    <dd className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                    <dd className="flex items-center gap-1 text-gray-400">
                       {user.email.substring(0, 4)} - {parseInt(user.email.substring(0, 4)) + 4}
                     </dd>
                   </dl>
                   <dl>
-                    <dt className="mb-1 font-semibold text-gray-900 dark:text-white">
+                    <dt className="mb-1 font-semibold text-white">
                       Professional Expereince
                     </dt>
-                    <dd className="flex items-center space-x-4 text-gray-500 dark:text-gray-400">
+                    <dd className="flex items-center space-x-4 text-gray-400">
                       {companies.map((e)=>{
                         return (<Image
                         key={e._id}
                         width={90}
                         height={90}
-                          className="w-[50px]  dark:flex"
+                          className="w-[50px]  flex"
                           src={e.logo ||  "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"}
                           alt=""
                         />
@@ -189,7 +189,7 @@ const Page = () => {
                 Edit your data
               </button>
             </div>
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 md:p-8">
+            <div className="rounded-lg border border-gray-200  p-4 dark:border-gray-700 bg-gray-800 md:p-8">
               <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
                 Posts
               </h3>
@@ -206,7 +206,7 @@ const Page = () => {
                 </dl>
 
                 <dl className="w-1/2 sm:w-1/4 md:flex-1 lg:w-auto">
-                  <dt className="text-base font-medium text-gray-500 dark:text-gray-400">
+                  <dt className="text-base font-medium text-gray-400">
                     Date:
                   </dt>
                   <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
