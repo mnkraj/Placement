@@ -149,6 +149,7 @@ const Page = () => {
                     <dd className="flex items-center space-x-4 text-gray-500 dark:text-gray-400">
                       {companies.map((e)=>{
                         return (<Image
+                        key={e._id}
                         width={90}
                         height={90}
                           className="w-[50px]  dark:flex"
