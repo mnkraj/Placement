@@ -11,6 +11,12 @@ const postSchema = new Schema(
     title: {
       type: String,
     },
+    heading: {
+      type: String,
+    },
+    coverphoto: {
+      type: String,
+    },
     html:{
         type: String,
     },

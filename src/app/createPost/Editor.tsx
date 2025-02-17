@@ -62,7 +62,7 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({ setHtmlContent }) => {
       <div className="p-3">
         <EditorContent
           editor={editor}
-          className="prose min-h-[150px] p-2 border border-white/10 rounded-lg focus:border-none"
+          className="prose  p-2 border border-white/10 rounded-lg focus:border-none"
         />
       </div>
     </div>

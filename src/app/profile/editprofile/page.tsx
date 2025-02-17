@@ -164,6 +164,8 @@ const Page = () => {
         return;
       }
       toast.success(data.message)
+      setlin("")
+      setSelected(null)
     } catch (error) {
       console.error("Upload failed:", error);
       setloading(false)

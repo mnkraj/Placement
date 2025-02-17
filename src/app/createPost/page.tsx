@@ -14,13 +14,23 @@ import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
 
 
 export default function Page() {
+  const [image, setImage] = useState<File | null>(null);
+  const [head,sethead] = useState("")
+  const [imagepreview, setimagepreview] = useState<string>("");
   const router = useRouter();
   const [title, setitle] = useState("")
   const [htmlContent, setHtmlContent] = useState("");
   const [companyoptions, setcompanyoptions] = useState<{ _id: string; name: string; logo: string }[]>([]);
   const [loading, setloading] = useState(false)
   const [selected, setSelected] = useState<{ _id: string; name: string; logo: string } | null>(null);
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      setimagepreview(URL.createObjectURL(file));
 
+    }
+  };
   useEffect(() => {
     async function fetchUser() {
       setloading(true)
@@ -62,20 +72,23 @@ export default function Page() {
 
   }, [])
   const hanldepost = async () => {
-    if (!title || !selected || !htmlContent) return;
+    if (!title || !selected || !htmlContent || !image || !head) 
+    {
+      toast.error("All FieldsMandatory")
+      return ;
+    }
     setloading(true)
-    const l =  toast.loading("Loading...")
+    const formData = new FormData();
+    formData.append("image" , image);
+    formData.append("title" , title)
+    formData.append("company",selected._id)
+    formData.append("html",htmlContent)
+    formData.append("head",head);
+    const l = toast.loading("Loading...")
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/post`, {
         method: "POST",
-        body: JSON.stringify({
-          company: selected._id,
-          title: title,
-          html: htmlContent
-        }),
-        headers: {
-          "Content-Type": "application/json",  // Add this header
-        },
+        body: formData,
         credentials: "include",
       });
       const data = await response.json();
@@ -85,15 +98,15 @@ export default function Page() {
       setitle("")
       toast.dismiss(l)
       // console.log("Logout Response:", data); // Debugging
-      if(!data.success)
-      {
+      if (!data.success) {
         toast.error(data.message)
-        return ;
+        return;
       }
       toast.success(data.message)
-      toast.success("ThankYou For Sharing Your Experience..",{
-        icon : "🤗"
+      toast.success("ThankYou For Sharing Your Experience..", {
+        icon: "🤗"
       })
+      router.push("/")
     } catch (error) {
       console.error("Upload failed:", error);
       setloading(false)
@@ -147,7 +160,7 @@ export default function Page() {
                   </div>
 
                   <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-not-data-selected:hidden group-data-focus:text-white">
-                    
+
                   </span>
                 </ListboxOption>
               ))}
@@ -157,23 +170,74 @@ export default function Page() {
         <h4 className=" mt-3 mb-6 text-xs font-medium text-[#9198A1]">You can Add a new company <Link href={"/profile/editprofile"}><span className="text-[#FFD60A]">here</span></Link> </h4>
         <hr />
         <h4 className="mt-6 mb-3 text-xs  font-medium text-[#9198A1]">Would you like to share details about the technologies you worked with and the tasks you undertook, or would you prefer to discuss the interview questions you encountered?</h4>
-        <select disabled={!selected} className={`form-input mb-3 ${selected ? "" : "cursor-not-allowed"} w-1/2 md:w-[35%] bg-[#161D29] border-[1 solid rgb(44,61,53)] rounded-md py-1.5 pr-2 pl-3 `} value={title} onChange={(e) => setitle(e.target.value)} >
-          <option value="" className="bg-[rgb(0,8,20)]" disabled>
-            Select a title
-          </option>
-          <option value="Interview" className="bg-[rgb(0,8,20)]" >
-            Interview Experience & Questions
-          </option>
-          <option value="Work" className="bg-[rgb(0,8,20)]" >
-            Your Work - Tech Stack & Responsibilities
-          </option>
-        </select>
+        <div className="flex flex-col md:flex-row mb-3">
+          <select disabled={!selected} className={`form-input mt-3 mr-3 mb-3   ${selected ? "" : "cursor-not-allowed"} w-1/2 md:w-[35%] bg-[#161D29] border-[1 solid rgb(44,61,53)] rounded-md py-1.5 pr-2 pl-3 `} value={title} onChange={(e) => setitle(e.target.value)} >
+            <option value="" className="bg-[rgb(0,8,20)]" disabled>
+              Select a title
+            </option>
+            <option value="Interview" className="bg-[rgb(0,8,20)]" >
+              Interview Experience & Questions
+            </option>
+            <option value="Work" className="bg-[rgb(0,8,20)]" >
+              Your Work - Tech Stack & Responsibilities
+            </option>
+          </select>
+          <input type="text" className={`form-input m-0 md:m-3  w-1/2 md:w-[35%] bg-[#161D29] border-[1 solid rgb(44,61,53)] rounded-md py-1.5 pr-2 pl-3  `} placeholder="Add A heading" value={head} onChange={(e)=> {sethead(e.target.value)}} disabled = {!selected} />
+        </div>
         <hr />
+
+        <div className="flex items-center  mt-3 justify-center w-full">
+          {imagepreview ? (
+            <div className="relative w-full h-64 border-2 border-gray-300 border-dashed rounded-lg overflow-hidden">
+              <Image src={imagepreview || "https://lh3.googleusercontent.com/a/ACg8ocIM97eXOLk9aAtoWnYR03eQyw6wLsxXARkOTjaNo8Uc1fERgSST=s96-c"} width={1000} height={1000} alt="Preview" className="w-full h-full object-contain" />
+              <button
+                className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
+                onClick={() => {
+                  setImage(null)
+                  setimagepreview("")
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          ) : (
+            <label
+              htmlFor="dropzone-file"
+              className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-[rgb(0,8,20)] dark:hover:bg-white/10  hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 "
+            >
+              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <svg
+                  className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 16"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                  />
+                </svg>
+                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                  <span className="font-semibold">Click to upload</span> or drag and drop
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  SVG, PNG, JPG or GIF (MAX. 800x400px)
+                </p>
+              </div>
+              <input id="dropzone-file" type="file" className="hidden" onChange={handleImageChange} />
+            </label>
+          )}
+        </div>
+
         <div className="mt-3">
           <TiptapEditor setHtmlContent={setHtmlContent} />
         </div>
         <div className="mb-10 w-full flex justify-end">
-          <button onClick={hanldepost} className={`flex items-center bg-[#FFD60A] ${selected && title && htmlContent ? "cursor-pointer" : "disabled cursor-not-allowed"}  gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined`}>Post</button>
+          <button  onClick={hanldepost} className={`flex items-center bg-[#FFD60A] ${selected && title && htmlContent && head && image ? "cursor-pointer" : "disabled cursor-not-allowed"}  gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined`}>Post</button>
         </div>
         <Parsehtml content={htmlContent} />
       </div>}

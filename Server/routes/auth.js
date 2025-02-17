@@ -177,20 +177,52 @@ router.post("/addprofessionalexperience", loggedin, async (req, res) => {
   });
 });
 router.post("/post", loggedin, async (req, res) => {
-  const { company, title, html } = req.body;
   const user = req.user;
-  if (!company || !title || !html || !user)
-    return res.json({ success: false, message: "Bad Auth" });
-  try {
-    const newpost = await new post({
-      company: company,
-      title: title,
-      html: html,
-      createdby: user.email,
-    }).save();
+  const form = new formidable.IncomingForm();
+  form.multiples = true;
 
-    res.json({ success: true, message: "Post created successfully" });
-  } catch (error) {}
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      console.error("Formidable Error:", err);
+      return res.status(500).json({ success: false, message: "Error parsing form data" });
+    }
+
+    const company = fields.company?.[0];
+    const title = fields.title?.[0];
+    const html = fields.html?.[0];
+    const head = fields.head?.[0];
+    const cover = files.image?.[0]; // Get uploaded image file
+
+    if (!company || !title || !html || !user || !head || !cover) {
+      return res.status(400).json({ success: false, message: "Bad Auth" });
+    }
+
+    try {
+      // Upload image to Cloudinary
+      const result = await cloudinary.uploader.upload(cover.filepath, {
+        folder: "blog",
+        resource_type: "image",
+        quality: "auto:best",
+      });
+
+      // Save post to database
+      const newPost = new post({
+        company,
+        title,
+        html,
+        heading : head,
+        coverphoto: result.secure_url, // Store Cloudinary image URL
+        createdby: user.email,
+      });
+
+      await newPost.save(); // Save to database
+
+      return res.json({ success: true, message: "Post added successfully" });
+    } catch (error) {
+      console.error("Cloudinary Upload Error:", error);
+      return res.status(500).json({ success: false, message: "Upload failed" });
+    }
+  });
 });
 
 // Logout user

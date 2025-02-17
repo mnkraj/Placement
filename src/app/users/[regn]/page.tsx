@@ -85,10 +85,6 @@ const Page = () => {
             {!loading && (
                 <section className=" py-8 antialiased bg-[rgb(0,8,20)]  md:py-8 mt-[30px] md:mt-[90px]">
                     <div className="mx-auto max-w-screen-lg px-4 2xl:px-0">
-                        <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white sm:text-2xl md:mb-6">
-                            My Profile
-                        </h2>
-
                         <div className="py-4 md:py-8">
                             <div className="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
                                 <div className="space-y-4">
