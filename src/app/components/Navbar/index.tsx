@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import GithubIcon from "../Icons/GithubIcon";
 import Spinner from "../Spinner"
 import Link from "next/link";
+import Image from "next/image";
 import ProfileDropdown from "./Profiledown";
 
 const Navbar = () => {
@@ -56,8 +57,8 @@ const Navbar = () => {
       {!loading && <div className="fixed container inset-x-0 top-0 z-10 border-b border-gray-950/5 dark:border-white/10">
         <div className="bg-[rgb(0,8,20)] ">
           <div className="flex h-14 items-center justify-between gap-4 md:h-[75px] px-4 sm:px-6">
-            <Link className="shrink-0 text-2xl font-semibold" aria-label="Home" href="/">
-              Placement
+            <Link className="shrink-0 text-2xl font-semibold w-[150px]" aria-label="Home" href="/">
+              <Image src="/logo.png" className="w-full" height={90} width={90} alt="" />
             </Link>
 
             {/* Search Bar */}
