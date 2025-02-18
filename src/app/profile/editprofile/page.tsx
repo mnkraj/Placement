@@ -304,7 +304,7 @@ const Page = () => {
                   </Listbox>
                 </div>
                 <div className="">
-                  <input type="url" value={lin} onChange={(e) => setlin(e.target.value)} className="form-input w-full" placeholder="Enter Your LinkedIn URL" />
+                  <input type="url" value={lin} onChange={(e) => setlin(e.target.value)} className="form-input w-full text-white" placeholder="Enter Your LinkedIn URL" />
                 </div>
               </div>
 
@@ -352,11 +352,11 @@ const Page = () => {
             <div className="flex max-w-[500px] justify-between  ">
               <div className="flex flex-col gap-y-5">
                 <div>
-                  <p className="mb-2 text-sm text-[#424854]">Name</p>
+                  <p className="mb-2 text-sm text-gray-400">Name</p>
                   <p className="text-sm font-medium text-richblack-5">{user.displayName}</p>
                 </div>
                 <div>
-                  <p className="mb-2 text-sm text-[#424854]">Batch</p>
+                  <p className="mb-2 text-sm text-gray-400">Batch</p>
                   <p className="text-sm font-medium text-richblack-5">
                     {user.email.substring(0, 4)}
                   </p>
@@ -365,11 +365,11 @@ const Page = () => {
               </div>
               <div className="flex flex-col gap-y-5">
                 <div>
-                  <p className="mb-2 text-sm text-[#424854]">Branch</p>
+                  <p className="mb-2 text-sm text-gray-400">Branch</p>
                   <p className="text-sm font-medium text-richblack-5">{branch[user.email.substring(6, 8).toUpperCase() as keyof typeof branch] || "Unknown"}</p>
                 </div>
                 <div>
-                  <p className="mb-2 text-sm text-[#424854]">Intitute Id</p>
+                  <p className="mb-2 text-sm text-gray-400">Intitute Id</p>
                   <p className="text-sm font-medium text-richblack-5">
                     {user.email.substring(0, 11).toUpperCase()}
                   </p>

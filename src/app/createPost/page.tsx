@@ -118,7 +118,7 @@ export default function Page() {
   return (
     <div >
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-[rgb(0,8,20)] bg-opacity-40 z-50">
+        <div className="fixed inset-0 flex items-center justify-center text-white bg-[rgb(0,8,20)] bg-opacity-40 z-50">
           <Spinner />
         </div>
       )}
@@ -171,8 +171,8 @@ export default function Page() {
         <hr />
         <h4 className="mt-6 mb-3 text-xs  font-medium text-[#9198A1]">Would you like to share details about the technologies you worked with and the tasks you undertook, or would you prefer to discuss the interview questions you encountered?</h4>
         <div className="flex flex-col md:flex-row mb-3">
-          <select disabled={!selected} className={`form-input mt-3 mr-3 mb-3   ${selected ? "" : "cursor-not-allowed"} w-1/2 md:w-[35%] bg-[#161D29] border-[1 solid rgb(44,61,53)] rounded-md py-1.5 pr-2 pl-3 `} value={title} onChange={(e) => setitle(e.target.value)} >
-            <option value="" className="bg-[rgb(0,8,20)]" disabled>
+          <select disabled={!selected} className={`form-input mt-3 mr-3 mb-3   ${selected ? "" : "cursor-not-allowed"} w-1/2 md:w-[35%] bg-[#161D29] border-[1 solid rgb(44,61,53)] rounded-md py-1.5 pr-2 pl-3 text-white `} value={title} onChange={(e) => setitle(e.target.value)} >
+            <option value="" className="bg-[rgb(0,8,20)] " disabled>
               Select a title
             </option>
             <option value="Interview" className="bg-[rgb(0,8,20)]" >
@@ -182,7 +182,7 @@ export default function Page() {
               Your Work - Tech Stack & Responsibilities
             </option>
           </select>
-          <input type="text" className={`form-input m-0 md:m-3  w-1/2 md:w-[35%] bg-[#161D29] border-[1 solid rgb(44,61,53)] rounded-md py-1.5 pr-2 pl-3  `} placeholder="Add A heading" value={head} onChange={(e)=> {sethead(e.target.value)}} disabled = {!selected} />
+          <input type="text" className={`form-input text-white m-0 md:m-3  w-1/2 md:w-[35%] bg-[#161D29] border-[1 solid rgb(44,61,53)] rounded-md py-1.5 pr-2 pl-3  `} placeholder="Add A heading" value={head} onChange={(e)=> {sethead(e.target.value)}} disabled = {!selected} />
         </div>
         <hr />
 
@@ -207,7 +207,7 @@ export default function Page() {
             >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 <svg
-                  className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                  className="w-8 h-8 mb-4 text-gray-400"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -221,10 +221,10 @@ export default function Page() {
                     d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                   />
                 </svg>
-                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <p className="mb-2 text-sm text-gray-400">
                   <span className="font-semibold">Click to upload</span> or drag and drop
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-gray-400">
                   PNG, JPG or JPEG (MAX. 800x400px)
                 </p>
               </div>

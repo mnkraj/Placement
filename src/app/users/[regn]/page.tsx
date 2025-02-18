@@ -158,7 +158,7 @@ const Page = () => {
                       LinkedIn Profile
                     </dt>
                     <dd className="text-gray-400">
-                      {user.linurl && user.linurl}
+                    {user.linurl ? <Link href={user.linurl} className="hover:text-yellow-50">{user.linurl}</Link> : "No Linked Url"}
                     </dd>
                   </dl>
                   <dl>
@@ -174,7 +174,7 @@ const Page = () => {
                       Professional Expereince
                     </dt>
                     <dd className="flex items-center space-x-4 text-gray-400">
-                      {companies.map((e) => {
+                      {companies.length > 0 ?  companies.map((e) => {
                         return (<Image
                           key={e._id}
                           width={90}
@@ -184,7 +184,7 @@ const Page = () => {
                           alt=""
                         />
                         )
-                      })}
+                      }) : <p className="mt-3">No Expereince Added</p> }
 
                     </dd>
                   </dl>
@@ -193,12 +193,12 @@ const Page = () => {
              
             </div>
             <hr />
-            <h1 className="text-2xl sm:text-2xl font-semibold mt-5 mb-5" >My Posts</h1>
+            <h1 className="text-2xl sm:text-2xl font-semibold mt-5 mb-5" >Posts</h1>
             <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 place-items-center mx-auto gap-3">
               {blogs.map((blog) => (
                 <article
                   key={blog._id}
-                  className="p-4 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 w-[330px] md:w-[330px] h-[460px] flex flex-col"
+                  className="p-4  rounded-lg border  shadow-md bg-gray-800 border-gray-700 w-[330px] md:w-[330px] h-[460px] flex flex-col"
                 >
                   {/* Image - Occupying 50% of Card Height */}
                   <div className="h-[50%] w-full relative  overflow-hidden">
@@ -239,7 +239,7 @@ const Page = () => {
                       <Link href={`/users/${blog.createdby.email.substring(0, 11).toLocaleUpperCase()}`}>
                         <div className="flex gap-2 justify-center items-center">
                           <Image src={blog.createdby.image || "https://res.cloudinary.com/dqw4vtcul/image/upload/v1739779818/profile_pictures/s5mmnhtbyftis7wp7ywu.jpg"} height={90} width={90} alt="" className="aspect-square rounded-full object-cover w-[30px]" />
-                          <div className=" hover:text-yellow-50">
+                          <div className="text-white hover:text-yellow-50">
                             <p className=" text-sm mb-0" >{blog.createdby.displayName || ""}</p>
                             {/* <small >{blog.createdby.email.substring(0,11).toLocaleUpperCase() || ""}</small> */}
                           </div>
