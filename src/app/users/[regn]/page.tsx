@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Spinner from "../../components/Spinner";
-import axios from "axios";
+// import axios from "axios";
 import Link from "next/link";
 import { useParams } from 'next/navigation';
 import { useRouter } from "next/navigation"; // Import useRouter
