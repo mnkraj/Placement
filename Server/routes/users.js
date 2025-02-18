@@ -15,6 +15,7 @@ router.post("/profile",  async (req, res) => {
     const {regn} = req.body;
     const email= (regn.toLowerCase()+"@nitjsr.ac.in");
     const userdata = await usermodel.findOne({ email: email })
+    if(!userdata) return res.json({success : false , message : "User Not Found"})
     const user = await usermodel
       .findOne({ email: email })
       .populate("professionalexperience");

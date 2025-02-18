@@ -4,6 +4,7 @@ import Spinner from "../../components/Spinner";
 // import axios from "axios";
 import Link from "next/link";
 import { useParams } from 'next/navigation';
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation"; // Import useRouter
 import Image from "next/image";
 interface Company {
@@ -83,6 +84,7 @@ const Page = () => {
                 // console.log(data)
                 if (!data.success) {
                     setloading(false);
+                    toast.error(data.message)
                     router.push("/");
                     return;
                     // Save user details
