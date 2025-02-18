@@ -1,6 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const usermodel = require("../models/User");
+const postmodel = require("../models/Posts")
 const jwt = require("jsonwebtoken");
 const post = require("../models/Posts");
 const company = require("../models/Companymodel");
@@ -22,7 +23,18 @@ router.post("/profile",  async (req, res) => {
     const companies = await company.find({
       _id: { $in: user.professionalexperience },
     });
-    res.json({ success: true, data: userdata, companies: companies });
+    const posts = await postmodel
+    .find({ createdby: user._id })
+    .populate({
+      path: "company",
+      select: "name logo",
+    })
+    .populate({
+      path: "createdby",
+      model: usermodel,
+      select: "email displayName image",
+    });
+    res.json({ success: true, data: userdata, companies: companies ,posts : posts });
     // console.log(req.user)
   });
 

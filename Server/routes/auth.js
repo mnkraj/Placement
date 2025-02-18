@@ -1,6 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const usermodel = require("../models/User");
+const postmodel = require("../models/Posts");
 const jwt = require("jsonwebtoken");
 const post = require("../models/Posts");
 const company = require("../models/Companymodel");
@@ -46,7 +47,7 @@ router.get("/google/callback", (req, res, next) => {
 
 // Get user profile
 router.get("/profile", loggedin, async (req, res) => {
-  const userdata = await usermodel.findOne({ email: req.user.email })
+  const userdata = await usermodel.findOne({ email: req.user.email });
   const user = await usermodel
     .findOne({ email: req.user.email })
     .populate("professionalexperience");
@@ -55,7 +56,18 @@ router.get("/profile", loggedin, async (req, res) => {
   const companies = await company.find({
     _id: { $in: user.professionalexperience },
   });
-  res.json({ success: true, data: userdata, companies: companies });
+  const posts = await postmodel
+    .find({ createdby: req.user.id })
+    .populate({
+      path: "company",
+      select: "name logo",
+    })
+    .populate({
+      path: "createdby",
+      model: usermodel,
+      select: "email displayName image",
+    });
+  res.json({ success: true, data: userdata, companies: companies , posts : posts });
   // console.log(req.user)
 });
 
@@ -166,8 +178,7 @@ router.post("/addprofessionalexperience", loggedin, async (req, res) => {
     }
     found_user.professionalexperience.push(id);
   }
-  if(linurl)
-  {
+  if (linurl) {
     found_user.linurl = linurl;
   }
   await found_user.save();
@@ -184,7 +195,9 @@ router.post("/post", loggedin, async (req, res) => {
   form.parse(req, async (err, fields, files) => {
     if (err) {
       console.error("Formidable Error:", err);
-      return res.status(500).json({ success: false, message: "Error parsing form data" });
+      return res
+        .status(500)
+        .json({ success: false, message: "Error parsing form data" });
     }
 
     const company = fields.company?.[0];
@@ -204,17 +217,16 @@ router.post("/post", loggedin, async (req, res) => {
         resource_type: "image",
         quality: "auto:best",
       });
-      
+
       // Save post to database
       const newPost = new post({
         company,
         title,
         html,
-        heading : head,
+        heading: head,
         coverphoto: result.secure_url, // Store Cloudinary image URL
         createdby: user.id,
       });
-      
 
       await newPost.save(); // Save to database
 

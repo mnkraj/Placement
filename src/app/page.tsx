@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Spinner from "./components/Spinner"
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -64,10 +65,10 @@ const Page = () => {
             {blogs.map((blog) => (
               <article
                 key={blog._id}
-                className="p-4 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 w-[330px] md:w-[350px] h-[450px] flex flex-col"
+                className="p-4 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 w-[330px] md:w-[350px] h-[460px] flex flex-col"
               >
                 {/* Image - Occupying 50% of Card Height */}
-                <div className="h-[50%] w-full relative flex-shrink-0 overflow-hidden">
+                <div className="h-[50%] w-full relative  overflow-hidden">
                   <Image
                     src={blog.coverphoto}
                     width={1500}
@@ -101,11 +102,16 @@ const Page = () => {
                   />
 
                   {/* Read More Link */}
-                  <div className="mt-auto  flex justify-between">
-                    <div className="flex gap-1 justify-center items-center">
+                  <div className="mt-auto  flex justify-between  hover:cursor-pointer">
+                    <Link href={`/users/${blog.createdby.email.substring(0,11).toLocaleUpperCase()}`}>
+                    <div className="flex gap-2 justify-center items-center">
                       <Image src={blog.createdby.image ||"https://res.cloudinary.com/dqw4vtcul/image/upload/v1739779818/profile_pictures/s5mmnhtbyftis7wp7ywu.jpg"} height={90} width={90} alt="" className="aspect-square rounded-full object-cover w-[30px]" />
-                      <p className="hover:text-yellow-50 hover:cursor-pointer" >{blog.createdby.displayName || ""}</p>
+                      <div className=" hover:text-yellow-50">
+                      <p className=" text-sm mb-0" >{blog.createdby.displayName || ""}</p>
+                      {/* <small >{blog.createdby.email.substring(0,11).toLocaleUpperCase() || ""}</small> */}
+                      </div>
                     </div>
+                    </Link>
                     <a
                       href="#"
                       className="inline-flex items-center font-medium text-[#FFD60A] hover:underline"
