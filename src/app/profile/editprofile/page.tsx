@@ -329,7 +329,7 @@ const Page = () => {
                   />
                     Choose Logo
                   </label>)}
-                  <input type="text" placeholder="Company name" id="CompanyName" className="form-input md:w-[40%] w-full " value={comapanyname} onChange={(e) => setcompanyname(e.target.value)} />
+                  <input type="text" placeholder="Company name" id="CompanyName" className="text-white form-input md:w-[40%] w-full " value={comapanyname} onChange={(e) => setcompanyname(e.target.value)} />
                   <button className="bg-[#2C333F] text-white py-2 px-5 rounded-md md:w-[20%] w-full" onClick={handlereset} >Reset </button>
                   <button className={`bg-yellow-50 text-gray-900 py-2 px-5 rounded-md  md:w-[20%] w-full ${companyLogoPreview && comapanyname ? "" : "opacity-50 cursor-not-allowed bg-yellow-25"} `} onClick={handleCompanyUpload} >Upload </button>
                 </div>
