@@ -1,5 +1,6 @@
 import Navbar from "./components/Navbar/index";
 import "./globals.css";
+// import Footer from "./components/Footer"
 import { Toaster } from "react-hot-toast";
 
 
@@ -27,6 +28,8 @@ export default function RootLayout({
           {/* Right patterned sidebar */}
           {/* <div className="hidden md:block border-x border-x-[--pattern-fg] bg-[image:repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 dark:[--pattern-fg:var(--color-white)]/10"></div> */}
         {/* </div> */}
+        
+        {/* <Footer /> */}
       </body>
     </html>
   );

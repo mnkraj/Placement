@@ -215,7 +215,7 @@ const Page = () => {
               </button>
             </div>
             <hr />
-            <h1 className="text-2xl sm:text-2xl font-semibold mt-5 mb-5" >My Posts</h1>
+            <h1 className="text-2xl sm:text-2xl font-semibold mt-5 mb-5 text-gray-400" >My Posts</h1>
             <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 place-items-center mx-auto gap-3">
               {blogs.map((blog) => (
                 <article
