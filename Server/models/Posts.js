@@ -21,7 +21,8 @@ const postSchema = new Schema(
         type: String,
     },
     createdby: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,  // Change from String to ObjectId
+      ref: "User",
     },
   },
   {

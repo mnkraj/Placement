@@ -26,7 +26,7 @@ passport.use(new GoogleStrategy({
 
         // 🛠 Include more details in the JWT
         const token = jwt.sign({
-            id: user.id,
+            id: user._id,
             email: user.email,
             displayName: user.displayName,
             firstName: user.firstName,

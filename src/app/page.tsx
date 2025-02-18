@@ -7,15 +7,25 @@ import axios from "axios";
 // Define the TypeScript interface for a blog post
 interface BlogPost {
   _id: string;
-  company: string;
+  company: {
+    _id: string;
+    name: string;
+    logo: string;
+  };
   title: string;
   heading: string;
   coverphoto: string;
   html: string;
-  createdby: string;
+  createdby: {
+    _id: string;
+    email: string;
+    displayName: string;
+    image: string;
+  };
   createdAt: string;
   updatedAt: string;
 }
+
 
 const Page = () => {
   const [loading, setloading] = useState(false);
@@ -72,8 +82,8 @@ const Page = () => {
                       {blog.title == "Work" ? "Work Expereince" : "Interview"}
                   </span>
                   <div className="flex gap-1 justify-center items-center">
-                      <Image src={"https://res.cloudinary.com/dqw4vtcul/image/upload/v1739644903/company_logos/o7gi9c47vjzz7c6mgnye.png"} height={90} width={90} alt="" className="aspect-square rounded-full object-cover w-[30px]" />
-                      <p className="text-white font-semibold " >{"Google"}</p>
+                      <Image src={blog.company.logo ||"https://res.cloudinary.com/dqw4vtcul/image/upload/v1739644903/company_logos/o7gi9c47vjzz7c6mgnye.png"} height={90} width={90} alt="" className="aspect-square rounded-full object-cover w-[30px]" />
+                      <p className="text-white font-semibold " >{blog.company.name ||""}</p>
                     </div>
               </div>
                 {/* Content */}
@@ -93,8 +103,8 @@ const Page = () => {
                   {/* Read More Link */}
                   <div className="mt-auto  flex justify-between">
                     <div className="flex gap-1 justify-center items-center">
-                      <Image src={"https://res.cloudinary.com/dqw4vtcul/image/upload/v1739779818/profile_pictures/s5mmnhtbyftis7wp7ywu.jpg"} height={90} width={90} alt="" className="aspect-square rounded-full object-cover w-[30px]" />
-                      <p className="hover:text-yellow-50 hover:cursor-pointer" >{"Mayank Raj"}</p>
+                      <Image src={blog.createdby.image ||"https://res.cloudinary.com/dqw4vtcul/image/upload/v1739779818/profile_pictures/s5mmnhtbyftis7wp7ywu.jpg"} height={90} width={90} alt="" className="aspect-square rounded-full object-cover w-[30px]" />
+                      <p className="hover:text-yellow-50 hover:cursor-pointer" >{blog.createdby.displayName || ""}</p>
                     </div>
                     <a
                       href="#"

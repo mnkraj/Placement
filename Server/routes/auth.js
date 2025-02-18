@@ -204,7 +204,7 @@ router.post("/post", loggedin, async (req, res) => {
         resource_type: "image",
         quality: "auto:best",
       });
-
+      
       // Save post to database
       const newPost = new post({
         company,
@@ -212,8 +212,9 @@ router.post("/post", loggedin, async (req, res) => {
         html,
         heading : head,
         coverphoto: result.secure_url, // Store Cloudinary image URL
-        createdby: user.email,
+        createdby: user.id,
       });
+      
 
       await newPost.save(); // Save to database
 
