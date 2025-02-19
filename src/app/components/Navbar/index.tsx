@@ -76,7 +76,7 @@ const Navbar = () => {
             <div className="flex items-center gap-6 max-md:hidden text-xl">
               {[
                 { name: "Home", href: "/" },
-                { name: "Users", href: "/users" },
+                { name: "People", href: "/users" },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -154,7 +154,7 @@ const Navbar = () => {
 
               {[
                 { name: "Home", href: "/" },
-                { name: "Users", href: "/users" },
+                { name: "People", href: "/users" },
               ].map((link) => (
                 <Link
                   key={link.href}

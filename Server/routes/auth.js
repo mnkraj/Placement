@@ -51,7 +51,9 @@ router.get("/profile", loggedin, async (req, res) => {
   const user = await usermodel
     .findOne({ email: req.user.email })
     .populate("professionalexperience");
-
+  if (!user) {
+    return res.json({ success: false, message: "User not found" });
+  }
   // Extract company details
   const companies = await company.find({
     _id: { $in: user.professionalexperience },
@@ -225,11 +227,13 @@ router.post("/post", loggedin, async (req, res) => {
           quality: "auto:best",
         });
         imgurl = result.secure_url;
-      }
-      else 
-      {
-        if(title == "Interview") imgurl = "https://res.cloudinary.com/dqw4vtcul/image/upload/v1739971970/blog/wubweypopldr2bo4nys9.png";
-        else if(title == "Work") imgurl = "https://res.cloudinary.com/dqw4vtcul/image/upload/v1739972310/blog/y7wcper0xlrrq3nqewac.png";
+      } else {
+        if (title == "Interview")
+          imgurl =
+            "https://res.cloudinary.com/dqw4vtcul/image/upload/v1739971970/blog/wubweypopldr2bo4nys9.png";
+        else if (title == "Work")
+          imgurl =
+            "https://res.cloudinary.com/dqw4vtcul/image/upload/v1739972310/blog/y7wcper0xlrrq3nqewac.png";
         else return res.json({ success: false, message: "Bad Auth" });
       }
       // Save post to database
