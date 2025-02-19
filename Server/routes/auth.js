@@ -67,7 +67,12 @@ router.get("/profile", loggedin, async (req, res) => {
       model: usermodel,
       select: "email displayName image",
     });
-  res.json({ success: true, data: userdata, companies: companies , posts : posts });
+  res.json({
+    success: true,
+    data: userdata,
+    companies: companies,
+    posts: posts,
+  });
   // console.log(req.user)
 });
 
@@ -206,25 +211,34 @@ router.post("/post", loggedin, async (req, res) => {
     const head = fields.head?.[0];
     const cover = files.image?.[0]; // Get uploaded image file
 
-    if (!company || !title || !html || !user || !head || !cover) {
+    if (!company || !title || !html || !user || !head) {
       return res.status(400).json({ success: false, message: "Bad Auth" });
     }
 
     try {
       // Upload image to Cloudinary
-      const result = await cloudinary.uploader.upload(cover.filepath, {
-        folder: "blog",
-        resource_type: "image",
-        quality: "auto:best",
-      });
-
+      let imgurl = "";
+      if (cover) {
+        const result = await cloudinary.uploader.upload(cover.filepath, {
+          folder: "blog",
+          resource_type: "image",
+          quality: "auto:best",
+        });
+        imgurl = result.secure_url;
+      }
+      else 
+      {
+        if(title == "Interview") imgurl = "https://res.cloudinary.com/dqw4vtcul/image/upload/v1739971970/blog/wubweypopldr2bo4nys9.png";
+        else if(title == "Work") imgurl = "https://res.cloudinary.com/dqw4vtcul/image/upload/v1739972310/blog/y7wcper0xlrrq3nqewac.png";
+        else return res.json({ success: false, message: "Bad Auth" });
+      }
       // Save post to database
       const newPost = new post({
         company,
         title,
         html,
         heading: head,
-        coverphoto: result.secure_url, // Store Cloudinary image URL
+        coverphoto: imgurl, // Store Cloudinary image URL
         createdby: user.id,
       });
 

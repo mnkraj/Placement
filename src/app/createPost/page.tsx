@@ -72,14 +72,14 @@ export default function Page() {
 
   }, [])
   const hanldepost = async () => {
-    if (!title || !selected || !htmlContent || !image || !head) 
+    if (!title || !selected || !htmlContent  || !head) 
     {
       toast.error("All FieldsMandatory")
       return ;
     }
     setloading(true)
     const formData = new FormData();
-    formData.append("image" , image);
+    if(image) {formData.append("image" , image);}
     formData.append("title" , title)
     formData.append("company",selected._id)
     formData.append("html",htmlContent)
@@ -237,7 +237,7 @@ export default function Page() {
           <TiptapEditor setHtmlContent={setHtmlContent} />
         </div>
         <div className="mb-10 w-full flex justify-end">
-          <button  onClick={hanldepost} className={`flex items-center bg-[#FFD60A] ${selected && title && htmlContent && head && image ? "cursor-pointer" : "disabled cursor-not-allowed"}  gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined`}>Post</button>
+          <button  onClick={hanldepost} className={`flex items-center bg-[#FFD60A] ${selected && title && htmlContent && head  ? "cursor-pointer" : "disabled cursor-not-allowed"}  gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined`}>Post</button>
         </div>
         <Parsehtml content={htmlContent} />
       </div>}
