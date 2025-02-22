@@ -1,0 +1,18 @@
+p{
+    font-size: 20px;
+    color: #9CA3AF;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+strong{
+    color: #FFD60A;
+    font-weight: bolder;
+}
+i,em{
+    font-style: italic;
+    font-weight: 100;
+}
+U{
+    color: #FFF970;
+    text-decoration: underline;
+}

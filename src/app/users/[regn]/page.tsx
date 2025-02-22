@@ -245,8 +245,8 @@ const Page = () => {
                           </div>
                         </div>
                       </Link>
-                      <a
-                        href="#"
+                      <Link
+                        href={`/posts/${blog._id}`}
                         className="inline-flex items-center font-medium text-[#FFD60A] hover:underline"
                       >
                         Read more
@@ -262,7 +262,7 @@ const Page = () => {
                             clipRule="evenodd"
                           ></path>
                         </svg>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </article>
