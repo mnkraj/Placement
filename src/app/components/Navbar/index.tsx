@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import GithubIcon from "../Icons/GithubIcon";
 import Spinner from "../Spinner"
 import Link from "next/link";
-// import Image from "next/image";
+import Image from "next/image";
 import ProfileDropdown from "./Profiledown";
 
 const Navbar = () => {
@@ -58,10 +58,7 @@ const Navbar = () => {
         <div className="bg-[rgb(0,8,20)] mx-0 md:mx-5">
           <div className="flex h-14 items-center justify-between gap-4  md:h-[75px] px-4 sm:px-6">
             <Link className="shrink-0 text-2xl font-semibold w-[150px]" aria-label="Home" href="/">
-              {/* <Image src="/logo2.png" className="w-full" height={150} width={150} alt="" /> */}
-              <div className="text-[#FFE83D]">
-                Naukri Hub
-              </div>
+              <Image src="/logo.png" className="w-full" height={150} width={150} alt="" />
             </Link>
 
             {/* Search Bar */}
