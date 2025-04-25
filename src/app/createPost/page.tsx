@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import TiptapEditor from "./Editor";
 import Spinner from "../components/Spinner"
-import Parsehtml from "./Parsehtml";
+// import Parsehtml from "./Parsehtml";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
@@ -239,7 +239,7 @@ export default function Page() {
         <div className="mb-10 w-full flex justify-end">
           <button  onClick={hanldepost} className={`flex items-center bg-[#FFD60A] ${selected && title && htmlContent && head  ? "cursor-pointer" : "disabled cursor-not-allowed"}  gap-x-2 rounded-md py-2 px-5 font-semibold text-[#000814] undefined`}>Post</button>
         </div>
-        <Parsehtml content={htmlContent} />
+        {/* <Parsehtml content={htmlContent} /> */}
       </div>}
     </div>
   )
