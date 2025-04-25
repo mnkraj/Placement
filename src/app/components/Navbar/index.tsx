@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import GithubIcon from "../Icons/GithubIcon";
 import Spinner from "../Spinner"
 import Link from "next/link";
-import Image from "next/image";
+// import Image from "next/image";
 import ProfileDropdown from "./Profiledown";
 
 const Navbar = () => {
